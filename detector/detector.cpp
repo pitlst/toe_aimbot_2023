@@ -15,29 +15,28 @@ using namespace cv;
 void MyDetector::Init(Appconfig* config)
 {
 #ifdef USE_NVIDIA
-    param_.path.engine_file_path = ;
+    param_.engine_file_path = config->detect_config.engine_file_path;
 #else
-    param_.path.bin_file_path = ;
-    param_.path.xml_file_path = ;
+    param_.bin_file_path = config->detect_config.bin_file_path;
+    param_.xml_file_path = config->detect_config.xml_file_path;
 #endif 
 
-    param_.NCHW.batch_size = ;
-    param_.NCHW.c = ;
-    param_.NCHW.w = ;
-    param_.NCHW.h = ;
+    param_.batch_size = config->detect_config.batch_size;
+    param_.c = config->detect_config.c;
+    param_.w = config->detect_config.w;
+    param_.h = config->detect_config.h;
 
-    param_.img.type = ;
-    param_.img.width = ;
-    param_.img.height = ;
+    param_.type = config->detect_config.type;
+    param_.width = config->detect_config.width;
+    param_.height = config->detect_config.height;
 
-    param_.thresh.nms_thresh = ;
-    param_.thresh.bbox_conf_thresh = ;
-    param_.thresh.merge_thresh = ;
+    param_.nms_thresh = config->detect_config.nms_thresh;
+    param_.bbox_conf_thresh = config->detect_config.bbox_conf_thresh;
+    param_.merge_thresh = config->detect_config.merge_thresh;
 
-    param_.nums.sizes = ;
-    param_.nums.colors = ;
-    param_.nums.classes = ;
-
+    param_.sizes = config->detect_config.sizes;
+    param_.colors = config->detect_config.colors;
+    param_.classes = config->detect_config.classes;
     
 }
 

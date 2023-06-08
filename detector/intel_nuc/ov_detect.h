@@ -11,7 +11,7 @@
 #else 
 #include <inference_engine.hpp>
 #include "detector.h"
-#include "../../common_structs.h"
+#include "common_structs.h"
 
 class OvO_Detector:MyDetector 
 {
