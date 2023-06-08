@@ -37,6 +37,8 @@ public:
     virtual void inference() = 0;
     virtual void postprocess() = 0;
 
-}
+};
+
+extern void load_config(Appconfig& config, std::string json_file_path);
 
 #endif

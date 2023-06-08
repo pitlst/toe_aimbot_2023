@@ -10,7 +10,7 @@ void load_config(Appconfig& config, std::string json_file_path)
 {
     Json::Reader reader;
     Json::Value value;
-    ifstream in(json_file_name, ios::binary);
+    ifstream in(json_file_path, ios::binary);
     cout << "load json now..." << endl;
     if (!in.is_open())
     {
@@ -21,10 +21,10 @@ void load_config(Appconfig& config, std::string json_file_path)
     {
         config.base_config.camp = value["camp"].asInt();
         #ifdef USE_NVIDIA
-        config.detect_config.path.engine_file_path = value["engine_file_path"].asString();
+        config.detect_config.engine_file_path = value["engine_file_path"].asString();
         #else
-        config.detect_config.path.bin_file_path = value["bin_file_path"];
-        config.detect_config.path.xml_file_path = value["xml_file_path"];
+        config.detect_config.bin_file_path = value["bin_file_path"].asString();
+        config.detect_config.xml_file_path = value["xml_file_path"].asString();
         #endif
     }
     else

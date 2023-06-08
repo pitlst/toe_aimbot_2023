@@ -1,0 +1,3 @@
+/home/cheakf/toe_aimbot_2023/detector/intel_nuc/build/CMakeFiles/ov_test.dir
+/home/cheakf/toe_aimbot_2023/detector/intel_nuc/build/CMakeFiles/edit_cache.dir
+/home/cheakf/toe_aimbot_2023/detector/intel_nuc/build/CMakeFiles/rebuild_cache.dir

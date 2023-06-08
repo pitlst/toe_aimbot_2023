@@ -7,43 +7,34 @@
 #ifndef COMMON_STRUCTS_H_
 #define COMMON_STRUCTS_H_
 
+#include <string>
 typedef struct 
 {
-    struct path
-    {
-        string engine_file_path;
-        string bin_file_path;
-        string xml_file_path;
-    };
+    // file_path
+        std::string engine_file_path;
+        std::string bin_file_path;
+        std::string xml_file_path;
 
-    struct NCHW
-    {
+    // NCHW
         int batch_size;
         int h;
         int w;
         int c;
-    };
 
-    struct img
-    {
+    // img
         int type; // rgb, bgr, yuv, bayerrg8 ...
         int width;
         int height;
-    };
 
-    struct thresh
-    {
+    // thresh
         float nms_thresh;
         float bbox_conf_thresh;
         float merge_thresh;
-    };
 
-    struct nums
-    {
+    // nums
         int classes;
         int colors;
         int sizes;
-    };
 
     
 }s_detector_params;
@@ -55,8 +46,14 @@ typedef struct
 
 typedef struct
 {
+    
+}s_detections;
+
+typedef struct
+{
     s_detector_params detect_config;
     s_base_params base_config;
 }Appconfig;
+
 
 #endif
