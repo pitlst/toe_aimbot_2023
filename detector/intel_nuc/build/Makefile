@@ -129,6 +129,30 @@ ov_test/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ov_test.dir/build.make CMakeFiles/ov_test.dir/build
 .PHONY : ov_test/fast
 
+home/cheakf/toe_aimbot_2023/detector/detector.o: home/cheakf/toe_aimbot_2023/detector/detector.cpp.o
+.PHONY : home/cheakf/toe_aimbot_2023/detector/detector.o
+
+# target to build an object file
+home/cheakf/toe_aimbot_2023/detector/detector.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ov_test.dir/build.make CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/detector.cpp.o
+.PHONY : home/cheakf/toe_aimbot_2023/detector/detector.cpp.o
+
+home/cheakf/toe_aimbot_2023/detector/detector.i: home/cheakf/toe_aimbot_2023/detector/detector.cpp.i
+.PHONY : home/cheakf/toe_aimbot_2023/detector/detector.i
+
+# target to preprocess a source file
+home/cheakf/toe_aimbot_2023/detector/detector.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ov_test.dir/build.make CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/detector.cpp.i
+.PHONY : home/cheakf/toe_aimbot_2023/detector/detector.cpp.i
+
+home/cheakf/toe_aimbot_2023/detector/detector.s: home/cheakf/toe_aimbot_2023/detector/detector.cpp.s
+.PHONY : home/cheakf/toe_aimbot_2023/detector/detector.s
+
+# target to generate assembly for a file
+home/cheakf/toe_aimbot_2023/detector/detector.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ov_test.dir/build.make CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/detector.cpp.s
+.PHONY : home/cheakf/toe_aimbot_2023/detector/detector.cpp.s
+
 home/cheakf/toe_aimbot_2023/detector/parse_config.o: home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.o
 .PHONY : home/cheakf/toe_aimbot_2023/detector/parse_config.o
 
@@ -186,6 +210,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... ov_test"
+	@echo "... home/cheakf/toe_aimbot_2023/detector/detector.o"
+	@echo "... home/cheakf/toe_aimbot_2023/detector/detector.i"
+	@echo "... home/cheakf/toe_aimbot_2023/detector/detector.s"
 	@echo "... home/cheakf/toe_aimbot_2023/detector/parse_config.o"
 	@echo "... home/cheakf/toe_aimbot_2023/detector/parse_config.i"
 	@echo "... home/cheakf/toe_aimbot_2023/detector/parse_config.s"

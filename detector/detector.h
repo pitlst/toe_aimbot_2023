@@ -26,7 +26,7 @@ protected:
 public:
     void show_results();
     void get_results();
-    void push_img(cv::Mat);
+    void push_img(cv::Mat&);
 
 public:
     MyDetector() = default;
