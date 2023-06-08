@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include "detector.h"
-#include "../common_structs.h"
+#include "common_structs.h"
 
 using namespace std;
 using namespace cv;
