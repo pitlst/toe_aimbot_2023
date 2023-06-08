@@ -4,8 +4,8 @@
 * Author: sumang
 * Description: some common structs
 */
-#ifndef OV_DETECT_H_
-#define OV_DETECT_H_
+#ifndef COMMON_STRUCTS_H_
+#define COMMON_STRUCTS_H_
 
 typedef struct 
 {
@@ -33,8 +33,30 @@ typedef struct
 
     struct thresh
     {
-        int 
+        float nms_thresh;
+        float bbox_conf_thresh;
+        float merge_thresh;
+    };
+
+    struct nums
+    {
+        int classes;
+        int colors;
+        int sizes;
     };
 
     
 }s_detector_params;
+
+typedef struct
+{
+    int camp;
+}s_base_params;
+
+typedef struct
+{
+    s_detector_params detect_config;
+    s_base_params base_config;
+}Appconfig;
+
+#endif

@@ -1,5 +1,5 @@
 /*
-* Detector.h
+* ov_detector.h
 * Created on: 20230605
 * Author: sumang
 * Description: armor detector of openvino
@@ -10,22 +10,29 @@
 #ifdef USE_NVIDIA
 #else 
 #include <inference_engine.hpp>
-#include "../common_structs.h"
+#include "detector.h"
+#include "../../common_structs.h"
 
 class OvO_Detector:MyDetector 
 {
 private:
-    InferenceEngine::Core ie;
-    InferenceEngine::CNNNetwork network;
-    InferenceEngine::ExecutableNetwork executable_network;
-    InferenceEngine::InferRequest infer_request;
+    InferenceEngine::Core ie_;
+    InferenceEngine::CNNNetwork network_;
+    InferenceEngine::ExecutableNetwork executable_network_;
+    InferenceEngine::InferRequest infer_request_;
+    std::vector<float> blob(640*640*3);
+    std::string input_name_;
+    std::vector<ml::OutLayer> output_layers_;
+    std::vector<std::string> output_names_;
+    std::vector<float> anchors_[4];
     void copyBlob(Data& blob, InferenceEngine::Blob::Ptr& ieBlob);
-    void preprocess() override {};
-    void inference() override {};
-    void postprocess() override {};
+    void preprocess() override;
+    void inference() override;
+    void postprocess() override;
+    bool detect();
 
 public:
-    OvO_Detector() = default;
+    OvO_Detector();
     ~OvO_Detector();
 
 }
