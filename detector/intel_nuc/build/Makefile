@@ -177,6 +177,30 @@ home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ov_test.dir/build.make CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.s
 .PHONY : home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.s
 
+ov_detect.o: ov_detect.cpp.o
+.PHONY : ov_detect.o
+
+# target to build an object file
+ov_detect.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ov_test.dir/build.make CMakeFiles/ov_test.dir/ov_detect.cpp.o
+.PHONY : ov_detect.cpp.o
+
+ov_detect.i: ov_detect.cpp.i
+.PHONY : ov_detect.i
+
+# target to preprocess a source file
+ov_detect.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ov_test.dir/build.make CMakeFiles/ov_test.dir/ov_detect.cpp.i
+.PHONY : ov_detect.cpp.i
+
+ov_detect.s: ov_detect.cpp.s
+.PHONY : ov_detect.s
+
+# target to generate assembly for a file
+ov_detect.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ov_test.dir/build.make CMakeFiles/ov_test.dir/ov_detect.cpp.s
+.PHONY : ov_detect.cpp.s
+
 ov_main.o: ov_main.cpp.o
 .PHONY : ov_main.o
 
@@ -216,6 +240,9 @@ help:
 	@echo "... home/cheakf/toe_aimbot_2023/detector/parse_config.o"
 	@echo "... home/cheakf/toe_aimbot_2023/detector/parse_config.i"
 	@echo "... home/cheakf/toe_aimbot_2023/detector/parse_config.s"
+	@echo "... ov_detect.o"
+	@echo "... ov_detect.i"
+	@echo "... ov_detect.s"
 	@echo "... ov_main.o"
 	@echo "... ov_main.i"
 	@echo "... ov_main.s"

@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/detector.cpp.o.d"
   "CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.o"
   "CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.o.d"
+  "CMakeFiles/ov_test.dir/ov_detect.cpp.o"
+  "CMakeFiles/ov_test.dir/ov_detect.cpp.o.d"
   "CMakeFiles/ov_test.dir/ov_main.cpp.o"
   "CMakeFiles/ov_test.dir/ov_main.cpp.o.d"
   "ov_test"

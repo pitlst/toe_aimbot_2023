@@ -83,10 +83,24 @@ CMakeFiles/ov_test.dir/ov_main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ov_test.dir/ov_main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cheakf/toe_aimbot_2023/detector/intel_nuc/ov_main.cpp -o CMakeFiles/ov_test.dir/ov_main.cpp.s
 
+CMakeFiles/ov_test.dir/ov_detect.cpp.o: CMakeFiles/ov_test.dir/flags.make
+CMakeFiles/ov_test.dir/ov_detect.cpp.o: /home/cheakf/toe_aimbot_2023/detector/intel_nuc/ov_detect.cpp
+CMakeFiles/ov_test.dir/ov_detect.cpp.o: CMakeFiles/ov_test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/cheakf/toe_aimbot_2023/detector/intel_nuc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/ov_test.dir/ov_detect.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ov_test.dir/ov_detect.cpp.o -MF CMakeFiles/ov_test.dir/ov_detect.cpp.o.d -o CMakeFiles/ov_test.dir/ov_detect.cpp.o -c /home/cheakf/toe_aimbot_2023/detector/intel_nuc/ov_detect.cpp
+
+CMakeFiles/ov_test.dir/ov_detect.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ov_test.dir/ov_detect.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/cheakf/toe_aimbot_2023/detector/intel_nuc/ov_detect.cpp > CMakeFiles/ov_test.dir/ov_detect.cpp.i
+
+CMakeFiles/ov_test.dir/ov_detect.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ov_test.dir/ov_detect.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/cheakf/toe_aimbot_2023/detector/intel_nuc/ov_detect.cpp -o CMakeFiles/ov_test.dir/ov_detect.cpp.s
+
 CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/detector.cpp.o: CMakeFiles/ov_test.dir/flags.make
 CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/detector.cpp.o: /home/cheakf/toe_aimbot_2023/detector/detector.cpp
 CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/detector.cpp.o: CMakeFiles/ov_test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/cheakf/toe_aimbot_2023/detector/intel_nuc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/detector.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/cheakf/toe_aimbot_2023/detector/intel_nuc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/detector.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/detector.cpp.o -MF CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/detector.cpp.o.d -o CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/detector.cpp.o -c /home/cheakf/toe_aimbot_2023/detector/detector.cpp
 
 CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/detector.cpp.i: cmake_force
@@ -100,7 +114,7 @@ CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/detector.cpp.s: cmak
 CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.o: CMakeFiles/ov_test.dir/flags.make
 CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.o: /home/cheakf/toe_aimbot_2023/detector/parse_config.cpp
 CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.o: CMakeFiles/ov_test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/cheakf/toe_aimbot_2023/detector/intel_nuc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/cheakf/toe_aimbot_2023/detector/intel_nuc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.o -MF CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.o.d -o CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.o -c /home/cheakf/toe_aimbot_2023/detector/parse_config.cpp
 
 CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.i: cmake_force
@@ -114,6 +128,7 @@ CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.s: 
 # Object files for target ov_test
 ov_test_OBJECTS = \
 "CMakeFiles/ov_test.dir/ov_main.cpp.o" \
+"CMakeFiles/ov_test.dir/ov_detect.cpp.o" \
 "CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/detector.cpp.o" \
 "CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.o"
 
@@ -121,6 +136,7 @@ ov_test_OBJECTS = \
 ov_test_EXTERNAL_OBJECTS =
 
 ov_test: CMakeFiles/ov_test.dir/ov_main.cpp.o
+ov_test: CMakeFiles/ov_test.dir/ov_detect.cpp.o
 ov_test: CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/detector.cpp.o
 ov_test: CMakeFiles/ov_test.dir/home/cheakf/toe_aimbot_2023/detector/parse_config.cpp.o
 ov_test: CMakeFiles/ov_test.dir/build.make
@@ -173,7 +189,7 @@ ov_test: /usr/lib/x86_64-linux-gnu/libopencv_photo.so.4.2.0
 ov_test: /usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.4.2.0
 ov_test: /usr/lib/x86_64-linux-gnu/libopencv_core.so.4.2.0
 ov_test: CMakeFiles/ov_test.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/cheakf/toe_aimbot_2023/detector/intel_nuc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable ov_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/cheakf/toe_aimbot_2023/detector/intel_nuc/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable ov_test"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ov_test.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

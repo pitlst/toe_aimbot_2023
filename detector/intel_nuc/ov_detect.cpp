@@ -5,6 +5,7 @@
 * Description: armor detector of openvino
 */
 
+#include <unistd.h>
 #include "ov_detect.h"
 
 using namespace cv;
@@ -15,31 +16,29 @@ OvO_Detector::OvO_Detector()
     int NUM_CLASSES = 8;
     int NUM_SIZES = 2;
     int NUM_COLORS = 4;
-    network ie_.ReadNetwork(param_.path.xml_file_path, param_.path.bin_file_path);
-    input_name_ = network.getInputsInfo().begin()->first;
-    for (auto iter : network.getOutputsInfo())
+    network_ = ie_.ReadNetwork(param_.xml_file_path, param_.bin_file_path);
+    input_name_ = network_.getInputsInfo().begin()->first;
+    for (auto iter : network_.getOutputsInfo())
     {
         auto dims = iter.second->getDims();
-        int stride_h = param_.NCHW.h / dims[2];
-        int stride_w = param_.NCHW.h / dims[3];
+        int stride_h = param_.h / dims[2];
+        int stride_w = param_.h / dims[3];
         assert(stride_h == stride_w && "Invalid stride!");
-        output_layers.push_back((ml::OutLayer){
-            .idx = (int)output_names.size(),
+        output_layers_.push_back((s_OutLayer){
+            .idx = (int)output_names_.size(),
             .stride = stride_h,
             .num_anchor = (int)dims[1],
             .num_out = (int)dims[4]});
-        output_names.push_back(iter.first);
+        output_names_.push_back(iter.first);
         assert(dims[4] == 5 + 10 + NUM_CLASSES + NUM_COLORS + NUM_SIZES && "Output dimension wrong!");
         iter.second->setPrecision(InferenceEngine::Precision::FP32);
-    logger.info("found network output: {}, size:{}, stride: {}, na: {}, no: {}"
-                    ,iter.first,vecsize_to_string(dims),stride_h,dims[1],dims[4]); 
     }
-    executable_network_ = ie.LoadNetwork(network, "GPU");
-    infer_request_ = executable_network.CreateInferRequest();
+    executable_network_ = ie_.LoadNetwork(network_, "GPU");
+    infer_request_ = executable_network_.CreateInferRequest();
     cout << "network_init_done. " << endl;
 }
 
-void OvO_Detector::copyBlob(Data &blob, InferenceEngine::Blob::Ptr &ieBlob) {
+void OvO_Detector::copyBlob(vector<float> &blob, InferenceEngine::Blob::Ptr &ieBlob) {
     InferenceEngine::MemoryBlob::Ptr mblob =
         InferenceEngine::as<InferenceEngine::MemoryBlob>(ieBlob);
     if (!mblob) {
@@ -66,7 +65,7 @@ void OvO_Detector::preprocess()
     size_t i = 0;
     for (size_t row = 0; row < img_h; ++row)
     {
-        uchar *uc_pixel = img.data + row * img.step;
+        uchar *uc_pixel = input_img_.data + row * input_img_.step;
         for (size_t col = 0; col < img_w; ++col)
         {
             // 三通道
@@ -80,19 +79,19 @@ void OvO_Detector::preprocess()
 }
 void OvO_Detector::inference()
 {
-    InferenceEngine::Blob::Ptr ieBlob = infer_request.GetBlob(input_name);
+    InferenceEngine::Blob::Ptr ieBlob = infer_request_.GetBlob(input_name_);
     copyBlob(blob, ieBlob);
     auto infer_start = std::chrono::steady_clock::now();
-    infer_request.Infer();
+    infer_request_.Infer();
 }
 void OvO_Detector::postprocess()
 {
     auto decode_start = std::chrono::steady_clock::now();
     s_detections objects;
-    for (auto layer : output_layers)
+    for (auto layer : output_layers_)
     {
         const InferenceEngine::Blob::Ptr output_blob =
-            infer_request.GetBlob(output_names_[layer.idx]);
+            infer_request_.GetBlob(output_names_[layer.idx]);
         InferenceEngine::MemoryBlob::CPtr moutput =
             InferenceEngine::as<InferenceEngine::MemoryBlob>(output_blob);
         auto moutputHolder = moutput->rmap();
