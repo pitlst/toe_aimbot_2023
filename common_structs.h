@@ -55,5 +55,13 @@ typedef struct
     s_base_params base_config;
 }Appconfig;
 
+typedef struct
+{
+    int idx;
+    int stride;
+    int num_anchor;
+    int num_out;
+}s_OutLayer;
+
 
 #endif
