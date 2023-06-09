@@ -39,6 +39,23 @@ OvO_Detector::OvO_Detector()
     cout << "network_init_done. " << endl;
 }
 
+void OvO_Detector::copyBlob(Data &blob, InferenceEngine::Blob::Ptr &ieBlob) {
+    InferenceEngine::MemoryBlob::Ptr mblob =
+        InferenceEngine::as<InferenceEngine::MemoryBlob>(ieBlob);
+    if (!mblob) {
+        THROW_IE_EXCEPTION
+            << "We expect blob to be inherited from MemoryBlob in matU8ToBlob, "
+            << "but by fact we were not able to cast inputBlob to MemoryBlob";
+    }
+    // locked memory holder should be alive all time while access to its buffer
+    // happens
+    auto mblobHolder = mblob->wmap();
+
+    float *ie_blob_data = mblobHolder.as<float *>();
+
+    memcpy(ie_blob_data, blob.data(), sizeof(float) * blob.size());
+}
+
 void OvO_Detector::preprocess()
 {
     int img_h = input_img_.rows;

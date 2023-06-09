@@ -33,7 +33,7 @@ private:
 
 public:
     OvO_Detector();
-    ~OvO_Detector();
+    ~OvO_Detector(){};
 
 }
 

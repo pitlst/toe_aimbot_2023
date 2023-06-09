@@ -30,7 +30,7 @@ public:
 
 public:
     MyDetector() = default;
-    ~MyDetector();
+    ~MyDetector(){};
 
     void Init(Appconfig* config);
     virtual void preprocess() = 0;
