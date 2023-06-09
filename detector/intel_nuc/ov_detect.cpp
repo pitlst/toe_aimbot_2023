@@ -22,7 +22,7 @@ OvO_Detector::OvO_Detector()
     {
         auto dims = iter.second->getDims();
         int stride_h = param_.h / dims[2];
-        int stride_w = param_.h / dims[3];
+        int stride_w = param_.w / dims[3];
         assert(stride_h == stride_w && "Invalid stride!");
         output_layers_.push_back((s_OutLayer){
             .idx = (int)output_names_.size(),
@@ -36,6 +36,8 @@ OvO_Detector::OvO_Detector()
     executable_network_ = ie_.LoadNetwork(network_, "GPU");
     infer_request_ = executable_network_.CreateInferRequest();
     cout << "network_init_done. " << endl;
+    vetor<float> tmp(param_.w*param_.h*3);
+    blob = tmp;
 }
 
 void OvO_Detector::copyBlob(vector<float> &blob, InferenceEngine::Blob::Ptr &ieBlob) {
@@ -59,7 +61,6 @@ void OvO_Detector::preprocess()
 {
     int img_h = input_img_.rows;
     int img_w = input_img_.cols;
-
     float *blob_data = blob.data();
 
     size_t i = 0;

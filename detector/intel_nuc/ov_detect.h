@@ -20,7 +20,7 @@ private:
     InferenceEngine::CNNNetwork network_;
     InferenceEngine::ExecutableNetwork executable_network_;
     InferenceEngine::InferRequest infer_request_;
-    std::vector<float> blob; // 640x640x3
+    std::vector<float> blob; 
     std::string input_name_;
     std::vector<s_OutLayer> output_layers_;
     std::vector<std::string> output_names_;
