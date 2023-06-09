@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.10)
 project(openvino_test)
 find_package(OpenCV REQUIRED)
 
-add_definitions(-DUSE_NVIDIA)
+#add_definitions(-DUSE_NVIDIA)
 
 include_directories(./)
 include_directories(../)

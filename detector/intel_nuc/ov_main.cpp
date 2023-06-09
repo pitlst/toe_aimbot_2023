@@ -13,7 +13,8 @@ int main()
     string json_path = "../../settings.json";
     load_config(config, json_path);
     OvO_Detector ov_detector;
-    ov_detector.Init(config);
+    Appconfig* ptr = &config;
+    ov_detector.Init(ptr);
 
     VideoCapture cap("test.mp4");
     if (!cap.isOpened())

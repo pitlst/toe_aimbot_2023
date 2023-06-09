@@ -25,7 +25,7 @@ private:
     std::vector<s_OutLayer> output_layers_;
     std::vector<std::string> output_names_;
     std::vector<float> anchors_[4];
-    void copyBlob(Data& blob, InferenceEngine::Blob::Ptr& ieBlob);
+    void copyBlob(std::vector<float>& blob, InferenceEngine::Blob::Ptr& ieBlob);
     void preprocess() override;
     void inference() override;
     void postprocess() override;
@@ -36,7 +36,7 @@ public:
     ~OvO_Detector(){};
     bool detect();
 
-}
+};
 
 #endif
 
