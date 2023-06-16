@@ -1,3 +1,6 @@
+#ifndef TOE_SERIAL_H_
+#define TOE_SERIAL_H_
+
 #include <vector>
 #include "debug.hpp"
 #include "toe_json.hpp"
@@ -5,12 +8,6 @@
 
 namespace toe
 {
-    // 数据转换用联合体
-    union acm_data{
-        uint8_t     bit[4];
-        float       data;
-    };
-    
     class toe_serial
     {
     public:
@@ -33,8 +30,8 @@ namespace toe
         int mode = DEFALUTE_MODE;
         //记录的颜色信息
         bool color = DEFALUTE_COLOR;
-        //用于记录串口文件的文件流
-        std::fstream m_file;
     };
     
 }
+
+#endif

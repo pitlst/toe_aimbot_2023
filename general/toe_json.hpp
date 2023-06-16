@@ -1,6 +1,5 @@
-#pragma once
-#ifndef SWQ_JSON
-#define SWQ_JSON
+#ifndef TOE_JSON_
+#define TOE_JSON_
 
 #include <list>
 #include <map>

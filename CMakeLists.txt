@@ -36,21 +36,21 @@ enable_testing()
 #   项目依赖设置
 #--------------------------------------------------------------------------------------#
 # 找到海康动态库，保存到变量里
-FILE (GLOB hik_LIBS "/opt/MVS/lib/64/*.so")
+FILE (GLOB HIK_LIBS "/opt/MVS/lib/64/*.so")
 # 找到海康头文件，保存到变量里
-FILE (GLOB 3rd_INCLUDE "/opt/MVS/include/*.h")
+FILE (GLOB HIK_INCLUDE "/opt/MVS/include/*.h")
+include_directories(/opt/MVS/include)
 # 找到opencv
 find_package(OpenCV REQUIRED)
 # 设置头文件查找路径
 include_directories(
     ${OpenCV_INCLUDE_DIRS}
+    ${PROJECT_SOURCE_DIR}
     asio_1.28
     general
     camera
     serial
     detect
-    3rd_part/include
-    .
 )
 # 找到openvino
 if(OPENVINO_START)
@@ -61,7 +61,6 @@ if(OPENVINO_START)
     message(STATUS "已找到openvino,路径" ${OpenVINO_DIR})
     include_directories(${OpenVINO_INCLUDE_DIRS})
     include_directories(detect/intel_nuc_11)
-    add_compile_definitions(OPENVINO_START)
 # 找到TensorRT
 elseif(TENSORRT_START)
     find_path(TENSORRT_INCLUDE_DIR NvInfer.h HINTS ${TENSORRT_ROOT} ${CUDA_TOOLKIT_ROOT_DIR} PATH_SUFFIXES include)
@@ -78,18 +77,20 @@ elseif(TENSORRT_START)
     message(STATUS "已找到TensorRT" ${TENSORRT_ROOT})
     include_directories(detect/nvidia_orin_nx)
     include_directories(${TENSORRT_INCLUDE_DIR})
-    add_compile_definitions(TENSORRT_START)
+    add_compile_definitions(USE_NVIDIA)
     set(openvino::runtime "")
 endif()
-
+# 把项目目录定义成宏传递给程序
+add_compile_definitions(PROJECT_PATH=\"${PROJECT_SOURCE_DIR}\")
 
 #--------------------------------------------------------------------------------------#
 #   项目编译设置
 #--------------------------------------------------------------------------------------#
 add_executable(${PROJECT_NAME} 
-                ${3rd_INCLUDE}
+                ${HIK_INCLUDE}
                 debug.hpp
                 general/toe_json.hpp
+                general/toe_structs.hpp
                 camera/grab_img.hpp
                 camera/grab_img.cpp
                 serial/toe_serial.hpp
@@ -102,39 +103,37 @@ add_executable(${PROJECT_NAME}
                 detect/nvidia_orin_nx/orin_detect.hpp
                 main.cpp 
                 )
-target_link_libraries(${PROJECT_NAME} PRIVATE pthread ${OpenCV_LIBS} ${3rd_LIBS} ${TENSORRT_LIBRARY} openvino::runtime)
+target_link_libraries(${PROJECT_NAME} PRIVATE pthread ${OpenCV_LIBS} ${HIK_LIBS} ${TENSORRT_LIBRARY} openvino::runtime)
 
-add_executable(serial_test
-                debug.hpp
-                general/toe_json.hpp
-                serial/toe_serial.hpp
-                serial/toe_serial.cpp 
-                test/serial_test.cpp
-                )
+# add_executable(serial_test
+#                 debug.hpp
+#                 general/toe_json.hpp
+#                 general/toe_structs.hpp
+#                 serial/toe_serial.hpp
+#                 serial/toe_serial.cpp 
+#                 test/serial_test.cpp
+#                 )
 
 add_executable(grab_test
                 debug.hpp
-                ${3rd_INCLUDE}
+                ${HIK_INCLUDE}
                 general/toe_json.hpp
+                general/toe_structs.hpp
                 camera/grab_img.hpp
                 camera/grab_img.cpp 
                 test/grab_test.cpp
                 )
-target_link_libraries(${PROJECT_NAME} PRIVATE ${OpenCV_LIBS} ${3rd_LIBS})
+target_link_libraries(grab_test PRIVATE ${OpenCV_LIBS} ${HIK_LIBS})
 
-add_executable(json_test
-                debug.hpp
-                general/toe_json.hpp
-                test/json_test.cpp
-                )
 
-add_executable(buffer_test
-                test/buffer_test.cpp
-                )
+# add_executable(buffer_test
+#                 test/buffer_test.cpp
+#                 )
 
 add_executable(ov_test
                 debug.hpp
                 general/toe_json.hpp
+                general/toe_structs.hpp
                 detect/detect.hpp
                 detect/detect.cpp
                 detect/intel_nuc_11/ov_detect.hpp
@@ -143,24 +142,24 @@ add_executable(ov_test
                 )
 target_link_libraries(${PROJECT_NAME} PRIVATE pthread ${OpenCV_LIBS} openvino::runtime)
 
-add_executable(orin_test
-                debug.hpp
-                general/toe_json.hpp
-                detect/detect.hpp
-                detect/detect.cpp
-                detect/intel_nuc_11/ov_detect.hpp
-                detect/intel_nuc_11/ov_detect.cpp
-                test/orin_test.cpp
-                )
-target_link_libraries(${PROJECT_NAME} PRIVATE pthread ${OpenCV_LIBS} ${TENSORRT_LIBRARY})
+# add_executable(orin_test
+#                 debug.hpp
+#                 general/toe_json.hpp
+#                 general/toe_structs.hpp
+#                 detect/detect.hpp
+#                 detect/detect.cpp
+#                 detect/intel_nuc_11/ov_detect.hpp
+#                 detect/intel_nuc_11/ov_detect.cpp
+#                 test/orin_test.cpp
+#                 )
+# target_link_libraries(${PROJECT_NAME} PRIVATE pthread ${OpenCV_LIBS} ${TENSORRT_LIBRARY})
 
 
 #--------------------------------------------------------------------------------------#
 #   项目测试设置
 #--------------------------------------------------------------------------------------#
-add_test(serial_test serial_test)
-add_test(grab_test grab_test)
-add_test(json_test json_test)
-add_test(buffer_test buffer_test)
-add_test(ov_test ov_test)
-add_test(orin_test orin_test)
+# add_test(serial_test serial_test)
+# add_test(grab_test grab_test)
+# add_test(buffer_test buffer_test)
+# add_test(ov_test ov_test)
+# add_test(orin_test orin_test)

@@ -4,11 +4,14 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
+                "/home/cheakf/*",
                 "/usr/include/opencv4",
+                "/opt/intel/openvino_2022/runtime/include/**",
+                "/opt/MVS/include/",
                 "${workspaceFolder}/asio_1.28"
             ],
-            "defines": [],
-            "compilerPath": "/usr/bin/gcc",
+            "defines": ["SET_PATH"],
+            "compilerPath": "/usr/bin/g++",
             "cStandard": "c17",
             "cppStandard": "c++14",
             "intelliSenseMode": "linux-gcc-x64"

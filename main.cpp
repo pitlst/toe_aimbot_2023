@@ -8,11 +8,10 @@
 
 int main()
 {
-    std::cout << "hello toe" << std::endl;
-#ifdef OPENVINO_START
+    std::cout << PROJECT_PATH << std::endl;
+#ifndef USE_NVIDIA
     std::cout << "hello openvino" << std::endl;
-#endif
-#ifdef TENSORRT_START
+#else
     std::cout << "hello tensorrt" << std::endl;
 #endif
     return 0;
