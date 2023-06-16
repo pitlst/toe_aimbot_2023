@@ -31,6 +31,10 @@
 *.out
 *.app
 
-
+# user set
 build/*
+asio_1.28/*
 .vscode/*
+data/log/*
+data/video/*
+data/weights/*
