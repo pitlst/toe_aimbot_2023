@@ -55,11 +55,12 @@ include_directories(
 # 找到openvino
 if(OPENVINO_START)
     find_package(OpenVINO REQUIRED)
-    if(NOT OPENVINO_START)
+    if(NOT OpenVINO_FOUND)
         message(FATAL_ERROR "Cannot find openvino library.")
     endif()
     message(STATUS "已找到openvino,路径" ${OpenVINO_DIR})
-    include_directories(${OpenVINO_INCLUDE_DIRS})
+    include_directories(/opt/intel/openvino_2022/runtime/include)
+    include_directories(/opt/intel/openvino_2022/runtime/include/ie)
     include_directories(detect/intel_nuc_11)
 # 找到TensorRT
 elseif(TENSORRT_START)
@@ -81,7 +82,7 @@ elseif(TENSORRT_START)
     set(openvino::runtime "")
 endif()
 # 把项目目录定义成宏传递给程序
-add_compile_definitions(PROJECT_PATH=\"${PROJECT_SOURCE_DIR}\")
+add_compile_definitions(PROJECT_PATH=\"${PROJECT_SOURCE_DIR}/\")
 
 #--------------------------------------------------------------------------------------#
 #   项目编译设置
@@ -140,7 +141,7 @@ add_executable(ov_test
                 detect/intel_nuc_11/ov_detect.cpp
                 test/ov_test.cpp
                 )
-target_link_libraries(${PROJECT_NAME} PRIVATE pthread ${OpenCV_LIBS} openvino::runtime)
+target_link_libraries(ov_test PRIVATE pthread ${OpenCV_LIBS} openvino::runtime)
 
 # add_executable(orin_test
 #                 debug.hpp

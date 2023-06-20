@@ -3,6 +3,8 @@
 
 #ifndef USE_NVIDIA
 
+#include <vector>
+
 #include "detect.hpp"
 #include "toe_structs.hpp"
 
@@ -13,50 +15,44 @@ namespace toe
     class OvO_Detector : public Detector
     {
     public:
-        std::vector<armor_data> output_nms_;
         OvO_Detector() = default;
         ~OvO_Detector() = default;
-        void OvO_Init();
+        void openvino_init();
         bool detect();
 
     private:
-        ov::Core ie_;
-        InferenceEngine::CNNNetwork network_;
-        InferenceEngine::ExecutableNetwork executable_network_;
-        InferenceEngine::InferRequest infer_request_;
-        std::vector<float> blob; 
-        std::string input_name_;
-        std::vector<s_OutLayer> output_layers_;
-        std::vector<std::string> output_names_;
-        std::vector<float> anchors_[4];
-        
-        void copyBlob(std::vector<float>& blob, InferenceEngine::Blob::Ptr& ieBlob);
-        void decode_outputs(const float *prob, s_detections &objects,
-                                s_OutLayer& layer_info, const int img_w,
-                                const int img_h);
-        void do_merge_nms();
         void preprocess() override;
         void inference() override;
         void postprocess() override;
+
+    private:
+        // openvino推理相关
+        ov::Core core;
+        ov::CompiledModel compiled_model;
+        ov::InferRequest infer_request;
+        // 检测到的装甲板
+        std::vector<armor_data> output_nms_;
+        // anchors和stride，按照输出顺序排列
+        std::vector<float> stride_;
+        std::vector<std::vector<float>> anchors; 
+        // 输出tensor层数
+        size_t out_tensor_size;
+        // 准备输入网络的图像数据
+        std::vector<float> blob;
+        cv::Mat input_temp;
     };
 
-    inline float sigmoid(float x)
-    {
-        return (1.0 / (1.0 + exp(-x)));
-    }
-    /**
-     * @brief calculate sigmoid values in an array
-     *
-     * @param src pointer of source array
-     * @param dst pointer of destination array
-     * @param length number of values
-     */
     inline void sigmoid(const float *src, float *dst, int length)
     {
         for (int i = 0; i < length; ++i)
         {
             dst[i] = (1.0 / (1.0 + exp(-src[i])));
         }
+    }
+
+    inline float sigmoid(float x)
+    {
+        return (1.0 / (1.0 + exp(-x)));
     }
 }
 

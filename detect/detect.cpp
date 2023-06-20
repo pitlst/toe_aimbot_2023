@@ -19,37 +19,37 @@ void toe::Detector::Init(const toe::json_head & input_json, int color)
     param_.width = temp_json["camera"]["0"]["width"].Int();
     param_.height = temp_json["camera"]["0"]["height"].Int();
 
-    param_.nms_thresh = temp_json["thresh"]["nms_thresh"].Int();
-    param_.bbox_conf_thresh = temp_json["thresh"]["bbox_conf_thresh"].Int();
-    param_.merge_thresh = temp_json["thresh"]["merge_thresh"].Int();
+    param_.nms_thresh = temp_json["thresh"]["nms_thresh"].Double();
+    param_.bbox_conf_thresh = temp_json["thresh"]["bbox_conf_thresh"].Double();
+    param_.merge_thresh = temp_json["thresh"]["merge_thresh"].Double();
 
-    param_.sizes = temp_json["thresh"]["nms_thresh"].Int();
-    param_.colors = temp_json["thresh"]["nms_thresh"].Int();
-    param_.classes = temp_json["thresh"]["nms_thresh"].Int();
-    param_.kpts = temp_json["thresh"]["nms_thresh"].Int();
+    param_.sizes = temp_json["nums"]["classes"].Int();
+    param_.colors = temp_json["nums"]["sizes"].Int();
+    param_.classes = temp_json["nums"]["colors"].Int();
+    param_.kpts = temp_json["nums"]["kpts"].Int();
 
     std::vector<float> temp_vector;
     for (toe::json ch : temp_json["anchors"]["1"])
     {
-        temp_vector.emplace_back(ch.Double());
+        temp_vector.emplace_back(ch.Int());
     }
     param_.a1 = temp_vector;
     temp_vector.clear();
     for (toe::json ch : temp_json["anchors"]["2"])
     {
-        temp_vector.emplace_back(ch.Double());
+        temp_vector.emplace_back(ch.Int());
     }
     param_.a2 = temp_vector;
     temp_vector.clear();
     for (toe::json ch : temp_json["anchors"]["3"])
     {
-        temp_vector.emplace_back(ch.Double());
+        temp_vector.emplace_back(ch.Int());
     }
     param_.a3 = temp_vector;
     temp_vector.clear();
     for (toe::json ch : temp_json["anchors"]["4"])
     {
-        temp_vector.emplace_back(ch.Double());
+        temp_vector.emplace_back(ch.Int());
     }
     param_.a4 = temp_vector;
     temp_vector.clear();
@@ -59,11 +59,13 @@ void toe::Detector::Init(const toe::json_head & input_json, int color)
 
 void toe::Detector::push_img(const cv::Mat& img)
 {   
-    if (input_imgs_.size() == max_size_)
+    img_mutex_.lock();
+    if (input_imgs.size() == max_size_)
     {   
-        input_imgs_.clear();
+        input_imgs.clear();
     } 
-    input_imgs_.emplace_back(img.clone());
+    input_imgs.emplace_back(img.clone());
+    img_mutex_.unlock();
 }
 
 armor_data toe::Detector::get_results(std::vector<armor_data>& armor)
@@ -210,6 +212,7 @@ armor_data toe::Detector::get_results(std::vector<armor_data>& armor)
 
 bool toe::Detector::show_results(cv::Mat& img)
 {
+    // cv::Mat img = img_.clone();
     using namespace cv;
     using namespace std;
 

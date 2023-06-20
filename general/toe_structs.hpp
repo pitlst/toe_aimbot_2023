@@ -65,12 +65,21 @@ struct armor_data
     float y_c;
     float z;
 
+    float conf;
     int t_size;
     int type;
-    cv::Rect rect;
-    float conf;
     int color;
-
+    
+    cv::Rect rect;
     cv::Point2f pts[5];
 };
+
+// 装甲匹配
+struct pick_merge_store{
+    int id;
+    std::vector<cv::Point2f> merge_pts;
+    std::vector<float> merge_confs;
+};
+
+typedef armor_data s_armor;
 #endif

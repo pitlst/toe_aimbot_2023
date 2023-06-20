@@ -28,15 +28,17 @@ namespace toe
         armor_data get_results(std::vector<armor_data>& armor);
 
     protected:
-        std::vector<cv::Mat> input_imgs_;
         const int max_size_ = 10;
+        std::vector<cv::Mat> input_imgs;
+        
         detect_data param_;
         std::vector<armor_data> outputs_armor;
+
         std::mutex img_mutex_;
         std::mutex outputs_mutex_;
 
     public:
-        cv::Mat input_img_;
+        cv::Mat input_img;
     }; 
 }
 

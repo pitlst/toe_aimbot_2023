@@ -1,24 +1,24 @@
 {
     "path":
     {
-      "engine_file_path": "detector/weights/yolo.engine",
-      "bin_file_path": "detector/weights/1.bin",
-      "xml_file_path": "detector/weights/1.xml"
+      "engine_file_path": "data/weights/yolo.engine",
+      "bin_file_path": "data/weights/1.bin",
+      "xml_file_path": "data/weights/1.xml"
     },
 
     "camera":
     {
         "0":
         {
-            "width": 1440,
-            "height": 1080,
+            "width": 1072,
+            "height": 1072,
             "offset_x":0,
             "offset_y":0,
             "Reverse_X":false,
             "Reverse_Y":false,
             "ADC_bit_depth":8,
-            "exposure":5000,
-            "gain":10,
+            "exposure":6000,
+            "gain":17,
             "balck_level":240
         },
         "1":
