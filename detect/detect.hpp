@@ -28,13 +28,17 @@ namespace toe
         armor_data get_results(std::vector<armor_data>& armor);
 
     protected:
+        // 输入的图像缓存
         const int max_size_ = 10;
         std::vector<cv::Mat> input_imgs;
         
+        // 配置参数
         detect_data param_;
+        // 检测到的的装甲板
         std::vector<armor_data> outputs_armor;
-
+        // 输入图像的线程锁
         std::mutex img_mutex_;
+        // 输出装甲板的线程锁
         std::mutex outputs_mutex_;
 
     public:

@@ -74,7 +74,6 @@ struct armor_data
     cv::Point2f pts[5];
 };
 
-// 装甲匹配
 struct pick_merge_store{
     int id;
     std::vector<cv::Point2f> merge_pts;

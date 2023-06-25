@@ -2,8 +2,8 @@
     "path":
     {
       "engine_file_path": "data/weights/yolo.engine",
-      "bin_file_path": "data/weights/1.bin",
-      "xml_file_path": "data/weights/1.xml"
+      "bin_file_path": "data/weights/2.bin",
+      "xml_file_path": "data/weights/2.xml"
     },
 
     "camera":
@@ -17,7 +17,7 @@
             "Reverse_X":false,
             "Reverse_Y":false,
             "ADC_bit_depth":8,
-            "exposure":6000,
+            "exposure":5000,
             "gain":17,
             "balck_level":240
         },

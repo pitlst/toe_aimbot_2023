@@ -28,9 +28,8 @@ namespace toe
     private:
         // openvino推理相关
         ov::Core core;
-        ov::CompiledModel compiled_model;
         ov::InferRequest infer_request;
-        // 检测到的装甲板
+        // 网络检测到的装甲板
         std::vector<armor_data> output_nms_;
         // anchors和stride，按照输出顺序排列
         std::vector<float> stride_;

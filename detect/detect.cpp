@@ -23,9 +23,9 @@ void toe::Detector::Init(const toe::json_head & input_json, int color)
     param_.bbox_conf_thresh = temp_json["thresh"]["bbox_conf_thresh"].Double();
     param_.merge_thresh = temp_json["thresh"]["merge_thresh"].Double();
 
-    param_.sizes = temp_json["nums"]["classes"].Int();
-    param_.colors = temp_json["nums"]["sizes"].Int();
-    param_.classes = temp_json["nums"]["colors"].Int();
+    param_.classes = temp_json["nums"]["classes"].Int();
+    param_.sizes = temp_json["nums"]["sizes"].Int();
+    param_.colors = temp_json["nums"]["colors"].Int();
     param_.kpts = temp_json["nums"]["kpts"].Int();
 
     std::vector<float> temp_vector;

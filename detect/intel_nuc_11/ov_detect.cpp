@@ -6,7 +6,7 @@ static float calc_iou(const armor_data &a, const armor_data &b)
 {
     cv::Rect_<float> inter = a.rect & b.rect;
     float inter_area = inter.area();
-    float union_area = a.rect.area() + b.rect.area() - inter_area;    
+    float union_area = a.rect.area() + b.rect.area() - inter_area;
     double iou = inter_area / union_area;
     if (std::isnan(iou))
     {
@@ -20,7 +20,7 @@ void toe::OvO_Detector::openvino_init()
     std::cout << "load network" << std::endl;
     // 加载模型
     std::shared_ptr<ov::Model> model = core.read_model(std::string(PROJECT_PATH) + param_.xml_file_path, std::string(PROJECT_PATH) + param_.bin_file_path);
-    compiled_model = core.compile_model(model, "GPU");
+    ov::CompiledModel compiled_model = core.compile_model(model, "GPU");
     // 创建推理请求
     infer_request = compiled_model.create_infer_request();
     // 因为网络是8，32，16的排列，所以anchor对应的排列需要更改
@@ -88,14 +88,13 @@ void toe::OvO_Detector::inference()
 void toe::OvO_Detector::postprocess()
 {
     // 清除上一次推理的输出
-    outputs_armor.clear();
+    output_nms_.clear();
     // 解码网络输出
     for (size_t i = 0; i < out_tensor_size; i++)
     {
         // 获取输出tensor的指针
         ov::Tensor output_tensor = infer_request.get_output_tensor(i);
-        // std::cout << output_tensor.get_byte_size() << std::endl;
-        auto out_data = output_tensor.data<float>();
+        const float *out_data = output_tensor.data<float>();
 
         int nums = 0;
         int now_stride = stride_[i];
@@ -103,7 +102,7 @@ void toe::OvO_Detector::postprocess()
         int out_h = param_.h / now_stride;
         int out_w = param_.w / now_stride;
         int num_out = 5 + 10 + param_.classes + param_.colors + param_.sizes;
-        float pred_data[num_out];
+        float pred_data[num_out] = {0};
         // 图像三通道
         for (int na = 0; na < 3; ++na)
         {
@@ -111,24 +110,76 @@ void toe::OvO_Detector::postprocess()
             {
                 for (int w_id = 0; w_id < out_w; ++w_id)
                 {
+                    pred_data[num_out] = {0};
                     int data_idx = (na * out_h * out_w + h_id * out_w + w_id) * num_out;
                     // 计算当前框的目标存在置信度
                     double obj_conf = toe::sigmoid(out_data[data_idx + 4]);
                     if (obj_conf > param_.bbox_conf_thresh)
                     {
                         toe::sigmoid(out_data + data_idx, pred_data, 5);
-                        toe::sigmoid(out_data + data_idx + 15, pred_data + 15, param_.classes + param_.colors + 2);
+                        toe::sigmoid(out_data + data_idx + 15, pred_data + 15, param_.classes + param_.colors + param_.sizes);
                         std::memcpy(pred_data + 5, out_data + data_idx + 5, sizeof(float) * 10);
+
+                        // // std::cout << pred_data[0] << std::endl;
+                        // // std::cout << pred_data[1] << std::endl;
+                        // // std::cout << pred_data[2] << std::endl;
+                        // // std::cout << pred_data[3] << std::endl;
+                        // // obj概率
+                        // std::cout << "obj" << std::endl;
+                        // std::cout << pred_data[4] << std::endl;
+                        // // std::cout << pred_data[5] << std::endl;
+                        // // std::cout << pred_data[6] << std::endl;
+                        // // std::cout << pred_data[7] << std::endl;
+                        // // std::cout << pred_data[8] << std::endl;
+                        // // std::cout << pred_data[9] << std::endl;
+                        // // std::cout << pred_data[10] << std::endl;
+                        // // std::cout << pred_data[11] << std::endl;
+                        // // std::cout << pred_data[12] << std::endl;
+                        // // std::cout << pred_data[13] << std::endl;
+                        // // std::cout << pred_data[14] << std::endl;
+                        // // 对应类别概率
+                        // std::cout << "classes" << std::endl;
+                        // std::cout << pred_data[15] << std::endl;
+                        // std::cout << pred_data[16] << std::endl;
+                        // std::cout << pred_data[17] << std::endl;
+                        // std::cout << pred_data[18] << std::endl;
+                        // std::cout << pred_data[19] << std::endl;
+                        // std::cout << pred_data[20] << std::endl;
+                        // std::cout << pred_data[21] << std::endl;
+                        // std::cout << pred_data[22] << std::endl;
+                        // // 对应颜色概率
+                        // std::cout << "color" << std::endl;
+                        // std::cout << pred_data[23] << std::endl;
+                        // std::cout << pred_data[24] << std::endl;
+                        // std::cout << pred_data[25] << std::endl;
+                        // std::cout << pred_data[26] << std::endl;
+                        // // 对应大小概率
+                        // std::cout << "size" << std::endl;
+                        // std::cout << pred_data[27] << std::endl;
+                        // std::cout << pred_data[28] << std::endl;
+
+                        // throw std::logic_error("");
                         // 计算当前框的颜色
                         int col_id = std::max_element(pred_data + 15 + param_.classes,
                                                       pred_data + 15 + param_.classes +
                                                           param_.colors) -
                                      (pred_data + 15 + param_.classes);
+
+                        // std::cout << "col_id is " << col_id << std::endl;
                         // 颜色不同停止计算
                         if (col_id == param_.camp)
                         {
                             continue;
                         }
+
+                        // std::cout << "color" << std::endl;
+                        // std::cout << col_id << std::endl;
+                        // std::cout << param_.classes << std::endl;
+                        // std::cout << pred_data[23] << std::endl;
+                        // std::cout << pred_data[24] << std::endl;
+                        // std::cout << pred_data[25] << std::endl;
+                        // std::cout << pred_data[26] << std::endl;
+
                         // 计算当前框的类别
                         int cls_id = std::max_element(pred_data + 15, pred_data + 15 + param_.classes) - (pred_data + 15);
                         // 计算是否是大小装甲
@@ -143,16 +194,20 @@ void toe::OvO_Detector::postprocess()
                         // std::cout << pred_data[15 + param_.classes + param_.colors + 1] << std::endl;
 
                         // std::cout << pred_data[15 + cls_id] << std::endl;
-                        // std::cout << pred_data[15 + param_.classes + col_id]  * 100 << std::endl;
+                                                // std::cout << "color" << std::endl;
+                        // std::cout << pred_data[23] << std::endl;
+                        // std::cout << pred_data[24] << std::endl;
+                        // std::cout << pred_data[25] << std::endl;
+                        // std::cout << pred_data[26] << std::endl;
+                        // std::cout << "color is " << pred_data[15 + param_.classes + col_id]  * 100 << std::endl;
                         // std::cout << pred_data[15 + param_.classes + param_.colors + t_size] * 100 << std::endl;
 
-                        // double final_conf = obj_conf * std::pow(pred_data[15 + cls_id] *
-                        //                                             pred_data[15 + param_.classes + col_id] * 100 *
-                        //                                             pred_data[15 + param_.classes + param_.colors + t_size] * 100 ,
-                        //                                         1 / 3.);
+                        double final_conf = obj_conf * std::pow(pred_data[15 + cls_id] *
+                                                                    pred_data[15 + param_.classes + col_id] *
+                                                                    pred_data[15 + param_.classes + param_.colors + t_size],
+                                                                1 / 3.);
 
-                        double final_conf = obj_conf * pred_data[15 + cls_id];
-                        std::cout << "final_conf " << final_conf << std::endl;
+                        // double final_conf = obj_conf * pred_data[15 + cls_id];
                         if (final_conf > param_.bbox_conf_thresh)
                         {
                             nums++;
@@ -187,7 +242,7 @@ void toe::OvO_Detector::postprocess()
                             now.color = col_id;
                             now.type = cls_id;
                             now.t_size = t_size;
-                            outputs_armor.emplace_back(now);
+                            output_nms_.emplace_back(now);
                         }
                     }
                 }
@@ -195,19 +250,20 @@ void toe::OvO_Detector::postprocess()
         }
     }
 
-    std::cout << "outputs_armor is " << outputs_armor.size() << std::endl;
+    std::cout << "output_nms_ is " << output_nms_.size() << std::endl;
 
-    output_nms_.clear();
+    // nms去除重叠装甲板
+    outputs_armor.clear();
     std::vector<pick_merge_store> picked;
-    std::sort(outputs_armor.begin(), outputs_armor.end(), [](const armor_data &a, const armor_data &b)
+    std::sort(output_nms_.begin(), output_nms_.end(), [](const armor_data &a, const armor_data &b)
               { return a.conf > b.conf; });
-    for (int i = 0; i < outputs_armor.size(); ++i)
+    for (int i = 0; i < output_nms_.size(); ++i)
     {
-        armor_data &now = outputs_armor[i];
+        armor_data &now = output_nms_[i];
         bool keep = true;
         for (int j = 0; j < picked.size(); ++j)
         {
-            armor_data &pre = outputs_armor[picked[j].id];
+            armor_data &pre = output_nms_[picked[j].id];
             float iou = calc_iou(now, pre);
             if (iou > param_.nms_thresh)
             {
@@ -229,10 +285,11 @@ void toe::OvO_Detector::postprocess()
         }
     }
 
+    // 根据置信度对关键点做加权平均，矫正关键点位置
     for (int i = 0; i < picked.size(); ++i)
     {
         int merge_num = picked[i].merge_confs.size();
-        armor_data now = outputs_armor[picked[i].id];
+        armor_data now = output_nms_[picked[i].id];
         double conf_sum = now.conf;
         for (int j = 0; j < 5; ++j)
         {
