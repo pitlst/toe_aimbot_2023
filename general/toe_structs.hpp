@@ -55,8 +55,6 @@ struct detect_data
     std::vector<float> a2;
     std::vector<float> a3;
     std::vector<float> a4;
-    
-    float z_scale;
 };
 // 装甲板参数
 struct armor_data
@@ -73,6 +71,17 @@ struct armor_data
     cv::Rect rect;
     cv::Point2f pts[5];
 };
+
+// 决策器配置参数
+struct determine_data
+{
+    size_t max_history_armor_len;
+    size_t max_loss_armor_fps;
+    int z_scale;
+    int width;
+    int height;
+};
+
 
 struct pick_merge_store{
     int id;

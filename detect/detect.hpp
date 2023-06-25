@@ -25,7 +25,7 @@ namespace toe
         void Init(const toe::json_head & input_json, int color);
         void push_img(const cv::Mat& img);
         bool show_results(cv::Mat& img);
-        armor_data get_results(std::vector<armor_data>& armor);
+        std::vector<armor_data> get_results();
 
     protected:
         // 输入的图像缓存
@@ -36,6 +36,8 @@ namespace toe
         detect_data param_;
         // 检测到的的装甲板
         std::vector<armor_data> outputs_armor;
+        // 最后输出的装甲板
+        armor_data final_armor;
         // 输入图像的线程锁
         std::mutex img_mutex_;
         // 输出装甲板的线程锁

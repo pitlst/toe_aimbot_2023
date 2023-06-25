@@ -255,8 +255,7 @@ void toe::OvO_Detector::postprocess()
     // nms去除重叠装甲板
     outputs_armor.clear();
     std::vector<pick_merge_store> picked;
-    std::sort(output_nms_.begin(), output_nms_.end(), [](const armor_data &a, const armor_data &b)
-              { return a.conf > b.conf; });
+    std::sort(output_nms_.begin(), output_nms_.end(), [](const armor_data &a, const armor_data &b){ return a.conf > b.conf; });
     for (int i = 0; i < output_nms_.size(); ++i)
     {
         armor_data &now = output_nms_[i];
@@ -307,10 +306,8 @@ void toe::OvO_Detector::postprocess()
         {
             now.pts[j] /= conf_sum;
         }
-        output_nms_.emplace_back(now);
+        outputs_armor.emplace_back(now);
     }
-
-    outputs_armor = output_nms_;
 }
 
 bool toe::OvO_Detector::detect()

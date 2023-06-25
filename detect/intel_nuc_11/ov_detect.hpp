@@ -8,7 +8,9 @@
 #include "detect.hpp"
 #include "toe_structs.hpp"
 
+
 #include "openvino/openvino.hpp"
+
 
 namespace toe
 {
@@ -53,7 +55,7 @@ namespace toe
     {
         return (1.0 / (1.0 +  std::exp(-x)));
     }
-}
 
+}
 #endif
 #endif

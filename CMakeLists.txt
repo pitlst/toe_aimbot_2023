@@ -49,7 +49,10 @@ include_directories(
     general
     camera
     serial
+    determine
     detect
+    detect/intel_nuc_11
+    detect/nvidia_orin_nx
 )
 # 找到openvino
 if(OPENVINO_START)
@@ -57,7 +60,6 @@ if(OPENVINO_START)
     message(STATUS "已找到openvino,路径" ${OpenVINO_DIR}/../include)
     include_directories(${OpenVINO_DIR}/../include)
     include_directories(${OpenVINO_DIR}/../include/ie)
-    include_directories(detect/intel_nuc_11)
 # 找到TensorRT
 elseif(TENSORRT_START)
     find_path(TENSORRT_INCLUDE_DIR NvInfer.h HINTS ${TENSORRT_ROOT} ${CUDA_TOOLKIT_ROOT_DIR} PATH_SUFFIXES include)
@@ -67,13 +69,11 @@ elseif(TENSORRT_START)
     find_library(TENSORRT_LIBRARY_INFER_PARSER nvparsers HINTS ${TENSORRT_ROOT} ${TENSORRT_BUILD} ${CUDA_TOOLKIT_ROOT_DIR} PATH_SUFFIXES lib lib64 lib/x64)
     set(TENSORRT_LIBRARY ${TENSORRT_LIBRARY_INFER} ${TENSORRT_LIBRARY_INFER_PLUGIN} ${TENSORRT_LIBRARY_INFER_PARSER})
     MESSAGE(STATUS "发现 TensorRT 库文件在 ${TENSORRT_LIBRARY}")
-    # find_package(TENSORRT REQUIRED)
     find_package_handle_standard_args(TENSORRT DEFAULT_MSG TENSORRT_INCLUDE_DIR TENSORRT_LIBRARY)
     if(NOT TENSORRT_FOUND)
         message(FATAL_ERROR "Cannot find TensorRT library.")
     endif()
     message(STATUS "已找到TensorRT")
-    include_directories(detect/nvidia_orin_nx)
     include_directories(${TENSORRT_INCLUDE_DIR})
     # 将宏定义传递至程序，启用英伟达
     add_compile_definitions(USE_NVIDIA)
@@ -96,6 +96,8 @@ add_executable(${PROJECT_NAME}
                 camera/grab_img.cpp
                 serial/toe_serial.hpp
                 serial/toe_serial.cpp 
+                determine/determine.hpp
+                determine/determine.cpp
                 detect/detect.hpp
                 detect/detect.cpp
                 detect/intel_nuc_11/ov_detect.hpp
@@ -139,8 +141,6 @@ add_executable(ov_test
                 detect/detect.cpp
                 detect/intel_nuc_11/ov_detect.hpp
                 detect/intel_nuc_11/ov_detect.cpp
-                detect/nvidia_orin_nx/orin_detect.hpp
-                detect/nvidia_orin_nx/orin_detect.hpp
                 test/ov_test.cpp
                 )
 target_link_libraries(ov_test PRIVATE pthread ${HIK_LIBS} ${OpenCV_LIBS} openvino::runtime)
