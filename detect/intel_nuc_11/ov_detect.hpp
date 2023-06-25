@@ -46,13 +46,13 @@ namespace toe
     {
         for (int i = 0; i < length; ++i)
         {
-            dst[i] = (1.0 / (1.0 + exp(-src[i])));
+            dst[i] = (1.0 / (1.0 + std::exp(-src[i])));
         }
     }
 
     inline float sigmoid(float x)
     {
-        return (1.0 / (1.0 + exp(-x)));
+        return (1.0 / (1.0 +  std::exp(-x)));
     }
 }
 

@@ -2,11 +2,17 @@
 
 #include "ov_detect.hpp"
 
-static float calc_iou(const armor_data& a,const armor_data& b){
+static float calc_iou(const armor_data &a, const armor_data &b)
+{
     cv::Rect_<float> inter = a.rect & b.rect;
     float inter_area = inter.area();
-    float union_area = a.rect.area() + b.rect.area() - inter_area;
-    return inter_area / union_area;
+    float union_area = a.rect.area() + b.rect.area() - inter_area;    
+    double iou = inter_area / union_area;
+    if (std::isnan(iou))
+    {
+        iou = -1;
+    }
+    return iou;
 }
 
 void toe::OvO_Detector::openvino_init()
@@ -22,7 +28,6 @@ void toe::OvO_Detector::openvino_init()
     out_tensor_size = out_node.size();
     for (auto out_n : out_node)
     {
-        auto output_node = out_n.get_node();
         auto out_name = out_n.get_any_name();
         if (out_name == "stride_8")
         {
@@ -41,11 +46,16 @@ void toe::OvO_Detector::openvino_init()
         }
     }
     std::cout << "network_init_done. " << std::endl;
-    blob.resize(param_.w*param_.h*3);
+    blob.resize(param_.w * param_.h * 3);
+
+    // throw std::logic_error("");
 }
 
 void toe::OvO_Detector::preprocess()
 {
+    // 提取模型输入的tensor的指针
+    ov::Tensor input_tensor = infer_request.get_input_tensor();
+    auto data1 = input_tensor.data<float>();
     // 输入图像预处理
     cv::resize(input_img, input_img, cv::Size(param_.w, param_.h));
     // 归一化
@@ -66,9 +76,6 @@ void toe::OvO_Detector::preprocess()
             ++i;
         }
     }
-    // 提取模型输入的tensor的指针
-    ov::Tensor input_tensor = infer_request.get_input_tensor();
-    auto data1 = input_tensor.data<float>();
     // 复制数据
     std::memcpy(data1, blob.data(), sizeof(float) * blob.size());
 }
@@ -80,12 +87,15 @@ void toe::OvO_Detector::inference()
 
 void toe::OvO_Detector::postprocess()
 {
+    // 清除上一次推理的输出
+    outputs_armor.clear();
     // 解码网络输出
     for (size_t i = 0; i < out_tensor_size; i++)
     {
         // 获取输出tensor的指针
         ov::Tensor output_tensor = infer_request.get_output_tensor(i);
-        const float *out_data = output_tensor.data<float>();
+        // std::cout << output_tensor.get_byte_size() << std::endl;
+        auto out_data = output_tensor.data<float>();
 
         int nums = 0;
         int now_stride = stride_[i];
@@ -103,7 +113,7 @@ void toe::OvO_Detector::postprocess()
                 {
                     int data_idx = (na * out_h * out_w + h_id * out_w + w_id) * num_out;
                     // 计算当前框的目标存在置信度
-                    float obj_conf = toe::sigmoid(out_data[data_idx + 4]);
+                    double obj_conf = toe::sigmoid(out_data[data_idx + 4]);
                     if (obj_conf > param_.bbox_conf_thresh)
                     {
                         toe::sigmoid(out_data + data_idx, pred_data, 5);
@@ -112,7 +122,8 @@ void toe::OvO_Detector::postprocess()
                         // 计算当前框的颜色
                         int col_id = std::max_element(pred_data + 15 + param_.classes,
                                                       pred_data + 15 + param_.classes +
-                                                          param_.colors) - (pred_data + 15 + param_.classes);
+                                                          param_.colors) -
+                                     (pred_data + 15 + param_.classes);
                         // 颜色不同停止计算
                         if (col_id == param_.camp)
                         {
@@ -122,15 +133,28 @@ void toe::OvO_Detector::postprocess()
                         int cls_id = std::max_element(pred_data + 15, pred_data + 15 + param_.classes) - (pred_data + 15);
                         // 计算是否是大小装甲
                         int t_size = std::max_element(pred_data + 15 + param_.classes + param_.colors, pred_data + 15 + param_.classes + param_.colors + 2) - (pred_data + 15 + param_.classes + param_.colors);
+
                         // 计算当前框的最终置信度
-                        double final_conf = obj_conf * std::pow(pred_data[15 + cls_id] *
-                                                                    pred_data[15 + param_.classes + col_id] *
-                                                                    pred_data[15 + param_.classes + param_.colors + t_size],
-                                                                1 / 3.);
+                        // std::cout << pred_data[15 + param_.classes + 0] << std::endl;
+                        // std::cout << pred_data[15 + param_.classes + 1] << std::endl;
+                        // std::cout << pred_data[15 + param_.classes + 2] << std::endl;
+                        // std::cout << pred_data[15 + param_.classes + 3] << std::endl;
+                        // std::cout << pred_data[15 + param_.classes + param_.colors + 0] << std::endl;
+                        // std::cout << pred_data[15 + param_.classes + param_.colors + 1] << std::endl;
+
+                        // std::cout << pred_data[15 + cls_id] << std::endl;
+                        // std::cout << pred_data[15 + param_.classes + col_id]  * 100 << std::endl;
+                        // std::cout << pred_data[15 + param_.classes + param_.colors + t_size] * 100 << std::endl;
+
+                        // double final_conf = obj_conf * std::pow(pred_data[15 + cls_id] *
+                        //                                             pred_data[15 + param_.classes + col_id] * 100 *
+                        //                                             pred_data[15 + param_.classes + param_.colors + t_size] * 100 ,
+                        //                                         1 / 3.);
+
+                        double final_conf = obj_conf * pred_data[15 + cls_id];
                         std::cout << "final_conf " << final_conf << std::endl;
                         if (final_conf > param_.bbox_conf_thresh)
                         {
-                            // std::cout << "get objec " << nums << std::endl;
                             nums++;
                             armor_data now;
                             float x = (pred_data[0] * 2.0 - 0.5 + w_id) * now_stride;
@@ -156,8 +180,8 @@ void toe::OvO_Detector::postprocess()
                             x1 = std::max(std::min(x1, (float)(param_.w)), 0.f);
                             y1 = std::max(std::min(y1, (float)(param_.h)), 0.f);
 
-                            now.x_c = (x0+x1)/2;
-                            now.y_c = (y0+y1)/2;
+                            now.x_c = (x0 + x1) / 2;
+                            now.y_c = (y0 + y1) / 2;
                             now.rect = cv::Rect(x0, y0, x1 - x0, y1 - y0);
                             now.conf = final_conf;
                             now.color = col_id;
@@ -175,48 +199,54 @@ void toe::OvO_Detector::postprocess()
 
     output_nms_.clear();
     std::vector<pick_merge_store> picked;
-    std::sort(outputs_armor.begin(),outputs_armor.end(), [](const armor_data& a,const armor_data& b){return a.conf > b.conf;});
-    for(int i = 0;i < outputs_armor.size();++i){
-        armor_data & now = outputs_armor[i];
-        bool keep = 1;
-        for(int j = 0;j < picked.size();++j){
-            armor_data & pre = outputs_armor[picked[j].id];
-            float iou = calc_iou(now,pre);
-
-            if(iou > param_.nms_thresh || isnan(iou)){
-                keep = 0;
-                if(iou > param_.merge_thresh && now.color == pre.color && now.type == pre.type && now.t_size == pre.t_size){
+    std::sort(outputs_armor.begin(), outputs_armor.end(), [](const armor_data &a, const armor_data &b)
+              { return a.conf > b.conf; });
+    for (int i = 0; i < outputs_armor.size(); ++i)
+    {
+        armor_data &now = outputs_armor[i];
+        bool keep = true;
+        for (int j = 0; j < picked.size(); ++j)
+        {
+            armor_data &pre = outputs_armor[picked[j].id];
+            float iou = calc_iou(now, pre);
+            if (iou > param_.nms_thresh)
+            {
+                keep = false;
+                if (now.color == pre.color && now.type == pre.type && now.t_size == pre.t_size && iou > param_.merge_thresh)
+                {
                     picked[j].merge_confs.push_back(now.conf);
-                    for(int k = 0;k < 5; ++k){
+                    for (int k = 0; k < 5; ++k)
+                    {
                         picked[j].merge_pts.push_back(now.pts[k]);
                     }
                 }
                 break;
             }
         }
-        if(keep){
-            picked.push_back({i,{},{}});
+        if (keep)
+        {
+            picked.push_back({i, {}, {}});
         }
     }
 
-    for(int i = 0;i < picked.size();++i)
+    for (int i = 0; i < picked.size(); ++i)
     {
         int merge_num = picked[i].merge_confs.size();
-        s_armor now = outputs_armor[picked[i].id];
+        armor_data now = outputs_armor[picked[i].id];
         double conf_sum = now.conf;
-        for(int j = 0;j < 5;++j)
+        for (int j = 0; j < 5; ++j)
         {
             now.pts[j] *= now.conf;
-        } 
-        for(int j = 0;j < merge_num;++j)
+        }
+        for (int j = 0; j < merge_num; ++j)
         {
-            for(int k = 0;k < 5;++k)
+            for (int k = 0; k < 5; ++k)
             {
                 now.pts[k] += picked[i].merge_pts[j * 5 + k] * picked[i].merge_confs[j];
             }
             conf_sum += picked[i].merge_confs[j];
         }
-        for(int j = 0;j < 5;++j)
+        for (int j = 0; j < 5; ++j)
         {
             now.pts[j] /= conf_sum;
         }

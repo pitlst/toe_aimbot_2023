@@ -212,56 +212,49 @@ armor_data toe::Detector::get_results(std::vector<armor_data>& armor)
 
 bool toe::Detector::show_results(cv::Mat& img)
 {
-    // cv::Mat img = img_.clone();
-    using namespace cv;
-    using namespace std;
-
-    resize(img, img, Size(640,640));
+    cv::resize(img, img, cv::Size(640,640));
     for (auto i = 0; i < outputs_armor.size(); i++)
     {
         int pt = 0;
-        Point ct(int(outputs_armor[i].pts[pt].x), int(outputs_armor[i].pts[pt].y));
-        Point ct1(int(outputs_armor[i].pts[pt+2].x), int(outputs_armor[i].pts[pt+2].y));
-            // cv::circle(img, ct, 2, cv::Scalar(0,0,255), -1);
-            putText(img, "0", ct, 0, 1, Scalar(0,255,0));
-            putText(img, "1", ct1, 0, 1, Scalar(0,255,0));
-        line(img, ct, ct1, Scalar(0,255,0), 2);
+        cv::Point ct(int(outputs_armor[i].pts[pt].x), int(outputs_armor[i].pts[pt].y));
+        cv::Point ct1(int(outputs_armor[i].pts[pt+2].x), int(outputs_armor[i].pts[pt+2].y));
+        // cv::circle(img, ct, 2, cv::Scalar(0,0,255), -1);
+        // cv::putText(img, "0", ct, 0, 1, Scalar(0,255,0));
+        // cv::putText(img, "1", ct1, 0, 1, Scalar(0,255,0));
+        cv::line(img, ct, ct1, cv::Scalar(0,255,0), 2);
 
-        ct = Point(int(outputs_armor[i].pts[pt].x), int(outputs_armor[i].pts[pt].y));
-        ct1 = Point(int(outputs_armor[i].pts[pt+1].x), int(outputs_armor[i].pts[pt+1].y));
-            // cv::circle(img, ct, 2, cv::Scalar(0,0,255), -1);
-        line(img, ct, ct1, Scalar(0,255,0), 2);
-
-
-
+        ct = cv::Point(int(outputs_armor[i].pts[pt].x), int(outputs_armor[i].pts[pt].y));
+        ct1 = cv::Point(int(outputs_armor[i].pts[pt+1].x), int(outputs_armor[i].pts[pt+1].y));
+        // cv::circle(img, ct, 2, cv::Scalar(0,0,255), -1);
+        cv::line(img, ct, ct1, cv::Scalar(0,255,0), 2);
 
         // cout << "x" << outputs_armor[i].x_c << endl;
         pt = 1;
-        Point ct2(int(outputs_armor[i].pts[pt].x), int(outputs_armor[i].pts[pt].y));
-        Point ct3(int(outputs_armor[i].pts[pt+2].x), int(outputs_armor[i].pts[pt+2].y));
-            // cv::circle(img, ct, 2, cv::Scalar(0,0,255), -1);
-        line(img, ct2, ct3, Scalar(0,255,0), 2);
+        cv::Point ct2(int(outputs_armor[i].pts[pt].x), int(outputs_armor[i].pts[pt].y));
+        cv::Point ct3(int(outputs_armor[i].pts[pt+2].x), int(outputs_armor[i].pts[pt+2].y));
+        // cv::circle(img, ct, 2, cv::Scalar(0,0,255), -1);
+        cv::line(img, ct2, ct3, cv::Scalar(0,255,0), 2);
 
-            putText(img, "2", ct2, 0, 1, Scalar(0,255,0));
-            putText(img, "3", ct3, 0, 1, Scalar(0,255,0));
+        // cv::putText(img, "2", ct2, 0, 1, cv::Scalar(0,255,0));
+        // cv::putText(img, "3", ct3, 0, 1, cv::Scalar(0,255,0));
 
-        ct = Point(int(outputs_armor[i].pts[pt+1].x), int(outputs_armor[i].pts[pt+1].y));
-        ct1 = Point(int(outputs_armor[i].pts[pt+2].x), int(outputs_armor[i].pts[pt+2].y));
+        ct = cv::Point(int(outputs_armor[i].pts[pt+1].x), int(outputs_armor[i].pts[pt+1].y));
+        ct1 = cv::Point(int(outputs_armor[i].pts[pt+2].x), int(outputs_armor[i].pts[pt+2].y));
             // cv::circle(img, ct, 2, cv::Scalar(0,0,255), -1);
-        line(img, ct, ct1, Scalar(0,255,0), 2);
+        cv::line(img, ct, ct1, cv::Scalar(0,255,0), 2);
 
         float scale = fabs(outputs_armor[i].pts[pt].x - outputs_armor[i].pts[pt+2].x);
         ct2.y -= int(scale/2);
-        string armor_text; // b r n p
+        std::string armor_text; // b r n p
         if(outputs_armor[i].color == 0) armor_text += "b";
         else if(outputs_armor[i].color == 1) armor_text += "r";
         else if(outputs_armor[i].color == 2) armor_text += "n";
         else if(outputs_armor[i].color == 3) armor_text += "p";
-        armor_text += to_string(outputs_armor[i].type);
+        armor_text += std::to_string(outputs_armor[i].type);
 
         if(outputs_armor[i].t_size == 1) armor_text += "*";
         
-        putText(img, armor_text, ct, FONT_HERSHEY_PLAIN, scale/20, Scalar(0,255,0), 1);
+        cv::putText(img, armor_text, ct, cv::FONT_HERSHEY_PLAIN, scale/20, cv::Scalar(0,255,0), 1);
     }
     return true;
 }

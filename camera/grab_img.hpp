@@ -20,6 +20,7 @@ namespace toe
 
         bool hik_init(const json_head & input_json, int devive_num);
         bool hik_end();
+        
     private:
         camera_data params_;
         cv::Mat frame;

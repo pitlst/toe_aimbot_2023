@@ -22,7 +22,6 @@ void detect_process(void)
     while (1)
     {
         ov_detector.detect();
-        // s_armor armor = ov_detector.get_results();
     }
 }
 
