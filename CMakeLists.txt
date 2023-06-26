@@ -39,13 +39,14 @@ FILE (GLOB HIK_LIBS "/opt/MVS/lib/64/*.so")
 # 找到海康头文件，保存到变量里
 FILE (GLOB HIK_INCLUDE "/opt/MVS/include/*.h")
 include_directories(/opt/MVS/include)
+# 找到boost
+find_package(Boost COMPONENTS filesystem regex REQUIRED)
 # 找到opencv
 find_package(OpenCV REQUIRED)
 # 设置头文件查找路径
 include_directories(
     ${OpenCV_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR}
-    asio_1.28
     general
     camera
     serial

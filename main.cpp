@@ -26,7 +26,7 @@ void detect_process(void)
     while (1)
     {
         ov_detector.detect();
-        auto armor = determiner.get_results(ov_detector.get_results());
+        // auto armor = determiner.get_results(ov_detector.get_results());
     }
 }
 

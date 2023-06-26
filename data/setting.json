@@ -2,8 +2,10 @@
     "path": {
         "engine_file_path": "data/weights/yolo.engine",
         "bin_file_path": "data/weights/2.bin",
-        "xml_file_path": "data/weights/2.xml"
+        "xml_file_path": "data/weights/2.xml",
+        "serial_path":"/dev/ttyACM0"
     },
+
     "determine": {
         "max_history_armor_len":10,
         "max_loss_armor_fps":10
