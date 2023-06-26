@@ -40,7 +40,7 @@ FILE (GLOB HIK_LIBS "/opt/MVS/lib/64/*.so")
 FILE (GLOB HIK_INCLUDE "/opt/MVS/include/*.h")
 include_directories(/opt/MVS/include)
 # 找到boost
-find_package(Boost COMPONENTS filesystem regex REQUIRED)
+find_package(Boost REQUIRED)
 # 找到opencv
 find_package(OpenCV REQUIRED)
 # 设置头文件查找路径
