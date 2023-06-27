@@ -102,7 +102,8 @@ armor_data toe::Determine::get_results(const std::vector<armor_data> &input_armo
             break;
         }
     }
-    else
+    // 如果没找到对应模式的装甲板
+    if (rst.x_c == -1 || rst.y_c == -1)
     {
         // 只有存在历史装甲版才会继续输出目标
         if (history_armor.size() > 0)

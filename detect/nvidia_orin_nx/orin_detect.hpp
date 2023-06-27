@@ -4,10 +4,9 @@
 #ifdef USE_NVIDIA
 
 namespace toe
-{
+{   
     
 }
-
 
 #endif
 #endif

@@ -31,7 +31,7 @@ namespace toe
         boost::system::error_code m_ec;
         // 接收发送缓冲区
         uint8_t rbuff[1024];
-        uint8_t sbuff[29];
+        uint8_t sbuff[12];
         // 串口路径
         std::string post_path;
         //记录的模式信息
