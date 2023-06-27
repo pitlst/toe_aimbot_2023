@@ -12,15 +12,15 @@
     },
     "camera": {
         "0": {
-            "width": 864,
-            "height": 864,
+            "width": 1072,
+            "height": 1072,
             "offset_x": 0,
             "offset_y": 0,
             "Reverse_X": false,
             "Reverse_Y": false,
             "ADC_bit_depth": 8,
             "exposure": 5000,
-            "gain": 10,
+            "gain": 17,
             "balck_level": 240
         },
         "1": {

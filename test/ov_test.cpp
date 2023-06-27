@@ -13,12 +13,11 @@ int main()
 {
     toe::hik_camera temp;
     toe::json_head temp_apra;
-    toe::OvO_Detector ov_detector;
+    toe::Detector ov_detector;
 
     temp_apra.open(std::string(PROJECT_PATH) + std::string("/data/setting.json"));
     temp.hik_init(temp_apra,0);
     ov_detector.Init(temp_apra, 0);
-    ov_detector.openvino_init();
     int k = 0;
     cv::Mat img;
     while (k != 27)

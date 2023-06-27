@@ -9,7 +9,7 @@
 
 namespace toe
 {
-    class Determine
+    class Determine final
     {
     public:
         Determine() = default;

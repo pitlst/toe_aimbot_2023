@@ -14,12 +14,12 @@
 
 namespace toe
 {
-    class Detector : public Detector_base
+    class Detector final : public Detector_base 
     {
     public:
         Detector() = default;
         ~Detector() = default;
-        void init();
+        void Init(const toe::json_head & input_json, int color);
         bool detect();
 
     private:

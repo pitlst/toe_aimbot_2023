@@ -22,7 +22,6 @@ void detect_process(void)
 {
     ov_detector.Init(config, color);
     determiner.Init(config, mode);
-    ov_detector.init();
     while (1)
     {
         ov_detector.detect();

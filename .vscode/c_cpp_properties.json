@@ -5,9 +5,14 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/home/cheakf/*",
-                "/opt/MVS/include/"
+                "/opt/MVS/include/",
+                "/opt/intel/openvino_2022/runtime/include/**",
+                "/usr/local/include/**",
+                "/usr/include/opencv4"
             ],
-            "defines": ["SET_PATH"],
+            "defines": [
+                "SET_PATH"
+            ],
             "compilerPath": "/usr/bin/g++",
             "cStandard": "c17",
             "cppStandard": "c++14",

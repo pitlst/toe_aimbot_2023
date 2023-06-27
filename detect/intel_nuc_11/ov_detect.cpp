@@ -15,8 +15,11 @@ static float calc_iou(const armor_data &a, const armor_data &b)
     return iou;
 }
 
-void toe::Detector::init()
+void toe::Detector::Init(const toe::json_head & input_json, int color)
 {
+    // 父类初始化 
+    toe::Detector_base::Init(input_json, color);
+    // 子类初始化
     std::cout << "load network" << std::endl;
     // 加载模型
     std::shared_ptr<ov::Model> model = core.read_model(std::string(PROJECT_PATH) + param_.xml_file_path, std::string(PROJECT_PATH) + param_.bin_file_path);

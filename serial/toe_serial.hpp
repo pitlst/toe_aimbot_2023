@@ -12,7 +12,7 @@
 
 namespace toe
 {
-    class toe_serial
+    class toe_serial final
     {
     public:
         toe_serial() = default;

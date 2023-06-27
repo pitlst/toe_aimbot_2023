@@ -12,7 +12,7 @@
 
 namespace toe
 {
-    class hik_camera
+    class hik_camera final
     {
     public:
         hik_camera() = default;
