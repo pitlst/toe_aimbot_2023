@@ -5,10 +5,7 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/home/cheakf/*",
-                "/usr/include/opencv4",
-                "/opt/intel/openvino_2022/runtime/include/**",
-                "/opt/MVS/include/",
-                "${workspaceFolder}/asio_1.28"
+                "/opt/MVS/include/"
             ],
             "defines": ["SET_PATH"],
             "compilerPath": "/usr/bin/g++",

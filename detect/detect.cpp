@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-void toe::Detector::Init(const toe::json_head & input_json, int color)
+void toe::Detector_base::Init(const toe::json_head & input_json, int color)
 {
     toe::json temp_json = input_json;
 
@@ -55,7 +55,7 @@ void toe::Detector::Init(const toe::json_head & input_json, int color)
     temp_vector.clear();
 }
 
-void toe::Detector::push_img(const cv::Mat& img)
+void toe::Detector_base::push_img(const cv::Mat& img)
 {   
     img_mutex_.lock();
     if (input_imgs.size() == max_size_)
@@ -66,7 +66,7 @@ void toe::Detector::push_img(const cv::Mat& img)
     img_mutex_.unlock();
 }
 
-bool toe::Detector::show_results(cv::Mat& img)
+bool toe::Detector_base::show_results(cv::Mat& img)
 {
     cv::resize(img, img, cv::Size(640,640));
     cv::Point ct0, ct1, ct2, ct3;
@@ -97,7 +97,7 @@ bool toe::Detector::show_results(cv::Mat& img)
     return true;
 }
 
-std::vector<armor_data> toe::Detector::get_results()
+std::vector<armor_data> toe::Detector_base::get_results()
 {
     std::vector<armor_data> temp_return;
     outputs_mutex_.lock();

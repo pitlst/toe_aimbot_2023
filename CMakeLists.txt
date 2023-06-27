@@ -46,6 +46,7 @@ find_package(OpenCV REQUIRED)
 # 设置头文件查找路径
 include_directories(
     ${OpenCV_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR}
     general
     camera
@@ -107,7 +108,7 @@ add_executable(${PROJECT_NAME}
                 detect/nvidia_orin_nx/orin_detect.hpp
                 main.cpp 
                 )
-target_link_libraries(${PROJECT_NAME} PRIVATE pthread ${OpenCV_LIBS} ${HIK_LIBS} ${TENSORRT_LIBRARY} openvino::runtime)
+target_link_libraries(${PROJECT_NAME} PRIVATE pthread ${OpenCV_LIBS} ${HIK_LIBS} ${Boost_LIBRARIES} ${TENSORRT_LIBRARY} openvino::runtime)
 
 add_executable(serial_test
                 debug.hpp
@@ -117,6 +118,7 @@ add_executable(serial_test
                 serial/toe_serial.cpp 
                 test/serial_test.cpp
                 )
+target_link_libraries(serial_test PRIVATE pthread ${OpenCV_LIBS} ${HIK_LIBS} ${Boost_LIBRARIES})
 
 add_executable(grab_test
                 debug.hpp
@@ -127,7 +129,7 @@ add_executable(grab_test
                 camera/grab_img.cpp 
                 test/grab_test.cpp
                 )
-target_link_libraries(grab_test PRIVATE ${OpenCV_LIBS} ${HIK_LIBS})
+target_link_libraries(grab_test PRIVATE pthread ${OpenCV_LIBS} ${HIK_LIBS} ${Boost_LIBRARIES})
 
 add_executable(ov_test
                 ${HIK_INCLUDE}
@@ -144,7 +146,7 @@ add_executable(ov_test
                 detect/intel_nuc_11/ov_detect.cpp
                 test/ov_test.cpp
                 )
-target_link_libraries(ov_test PRIVATE pthread ${HIK_LIBS} ${OpenCV_LIBS} openvino::runtime)
+target_link_libraries(ov_test PRIVATE pthread ${HIK_LIBS} ${OpenCV_LIBS} ${Boost_LIBRARIES} openvino::runtime)
 
 add_executable(orin_test
                 debug.hpp
@@ -156,7 +158,7 @@ add_executable(orin_test
                 detect/nvidia_orin_nx/orin_detect.cpp
                 test/orin_test.cpp
                 )
-target_link_libraries(orin_test PRIVATE pthread ${OpenCV_LIBS} ${TENSORRT_LIBRARY})
+target_link_libraries(orin_test PRIVATE pthread ${OpenCV_LIBS} ${Boost_LIBRARIES} ${TENSORRT_LIBRARY})
 
 
 #--------------------------------------------------------------------------------------#

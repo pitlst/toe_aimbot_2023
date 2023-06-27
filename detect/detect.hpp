@@ -12,11 +12,11 @@
 
 namespace toe
 {
-    class Detector
+    class Detector_base
     {    
     public:
-        Detector() = default;
-        ~Detector() = default;
+        Detector_base() = default;
+        ~Detector_base() = default;
 
         virtual void preprocess() = 0;
         virtual void inference() = 0;

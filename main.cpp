@@ -11,7 +11,7 @@
 #include "orin_detect.hpp"
 
 toe::hik_camera hik_cam;
-toe::OvO_Detector ov_detector;
+toe::Detector ov_detector;
 toe::Determine determiner;
 toe::json_head config;
 
@@ -22,7 +22,7 @@ void detect_process(void)
 {
     ov_detector.Init(config, color);
     determiner.Init(config, mode);
-    ov_detector.openvino_init();
+    ov_detector.init();
     while (1)
     {
         ov_detector.detect();

@@ -14,12 +14,12 @@
 
 namespace toe
 {
-    class OvO_Detector : public Detector
+    class Detector : public Detector_base
     {
     public:
-        OvO_Detector() = default;
-        ~OvO_Detector() = default;
-        void openvino_init();
+        Detector() = default;
+        ~Detector() = default;
+        void init();
         bool detect();
 
     private:

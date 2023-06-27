@@ -15,7 +15,7 @@ static float calc_iou(const armor_data &a, const armor_data &b)
     return iou;
 }
 
-void toe::OvO_Detector::openvino_init()
+void toe::Detector::init()
 {
     std::cout << "load network" << std::endl;
     // 加载模型
@@ -51,7 +51,7 @@ void toe::OvO_Detector::openvino_init()
     // throw std::logic_error("");
 }
 
-void toe::OvO_Detector::preprocess()
+void toe::Detector::preprocess()
 {
     // 提取模型输入的tensor的指针
     ov::Tensor input_tensor = infer_request.get_input_tensor();
@@ -80,12 +80,12 @@ void toe::OvO_Detector::preprocess()
     std::memcpy(data1, blob.data(), sizeof(float) * blob.size());
 }
 
-void toe::OvO_Detector::inference()
+void toe::Detector::inference()
 {
     infer_request.infer();
 }
 
-void toe::OvO_Detector::postprocess()
+void toe::Detector::postprocess()
 {
     // 清除上一次推理的输出
     output_nms_.clear();
@@ -310,7 +310,7 @@ void toe::OvO_Detector::postprocess()
     }
 }
 
-bool toe::OvO_Detector::detect()
+bool toe::Detector::detect()
 {
     if (!input_imgs.empty())
     {
