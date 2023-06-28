@@ -27,7 +27,9 @@ if(CUDA_FOUND)
     message(STATUS "检测到cuda,启用TensorRT")
 else()
     set(OPENVINO_START 1)
+    # 兼容性考虑，将对应变量置空
     set(CUDA_INCLUDE_DIRS "")
+    set(CUDA_LIBRARIES "")
     message(STATUS "未检测到cuda,启用OpenVINO")
 endif()
 enable_testing()
@@ -112,14 +114,6 @@ add_executable(${PROJECT_NAME}
                 main.cpp 
                 )
 target_link_libraries(${PROJECT_NAME} PRIVATE pthread ${OpenCV_LIBS} ${HIK_LIBS} ${Boost_LIBRARIES} ${TENSORRT_LIBRARY}  ${CUDA_LIBRARIES} openvino::runtime)
-
-add_executable(trans_onnx_to_engine
-                general/general.hpp
-                general/toe_json.hpp
-                general/toe_structs.hpp
-                trans_onnx_to_engine.cpp 
-                )
-target_link_libraries(${PROJECT_NAME} PRIVATE pthread ${OpenCV_LIBS} ${TENSORRT_LIBRARY} ${CUDA_LIBRARIES} openvino::runtime)
 
 add_executable(serial_test
                 debug.hpp
