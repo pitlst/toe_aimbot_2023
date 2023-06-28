@@ -110,6 +110,13 @@ add_executable(${PROJECT_NAME}
                 )
 target_link_libraries(${PROJECT_NAME} PRIVATE pthread ${OpenCV_LIBS} ${HIK_LIBS} ${Boost_LIBRARIES} ${TENSORRT_LIBRARY} openvino::runtime)
 
+add_executable(trans_onnx_to_engine
+                general/toe_json.hpp
+                general/toe_structs.hpp
+                main.cpp 
+                )
+target_link_libraries(${PROJECT_NAME} PRIVATE pthread ${OpenCV_LIBS} ${TENSORRT_LIBRARY} openvino::runtime)
+
 add_executable(serial_test
                 debug.hpp
                 general/toe_json.hpp
