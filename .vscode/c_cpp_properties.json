@@ -8,7 +8,9 @@
                 "/opt/MVS/include/",
                 "/opt/intel/openvino_2022/runtime/include/**",
                 "/usr/local/include/**",
-                "/usr/include/opencv4"
+                "/usr/include/opencv4",
+                "/usr/include/x86_64-linux-gnu/**",
+                "/usr/local/cuda/include"
             ],
             "defines": [
                 "SET_PATH"

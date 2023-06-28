@@ -6,8 +6,7 @@
 #include <vector>
 
 #include "detect.hpp"
-#include "toe_structs.hpp"
-
+#include "general.hpp"
 
 #include "openvino/openvino.hpp"
 
@@ -42,19 +41,6 @@ namespace toe
         std::vector<float> blob;
         cv::Mat input_temp;
     };
-
-    inline void sigmoid(const float *src, float *dst, int length)
-    {
-        for (int i = 0; i < length; ++i)
-        {
-            dst[i] = (1.0 / (1.0 + std::exp(-src[i])));
-        }
-    }
-
-    inline float sigmoid(float x)
-    {
-        return (1.0 / (1.0 +  std::exp(-x)));
-    }
 
 }
 #endif

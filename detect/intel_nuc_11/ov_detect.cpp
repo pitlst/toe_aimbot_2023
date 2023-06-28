@@ -2,19 +2,6 @@
 
 #include "ov_detect.hpp"
 
-static float calc_iou(const armor_data &a, const armor_data &b)
-{
-    cv::Rect_<float> inter = a.rect & b.rect;
-    float inter_area = inter.area();
-    float union_area = a.rect.area() + b.rect.area() - inter_area;
-    double iou = inter_area / union_area;
-    if (std::isnan(iou))
-    {
-        iou = -1;
-    }
-    return iou;
-}
-
 void toe::Detector::Init(const toe::json_head & input_json, int color)
 {
     // 父类初始化 
