@@ -25,6 +25,7 @@ namespace toe
         void Init(const toe::json_head & input_json, int color);
         void push_img(const cv::Mat& img);
         bool show_results(cv::Mat& img);
+        bool detect();
         std::vector<armor_data> get_results();
 
     protected:

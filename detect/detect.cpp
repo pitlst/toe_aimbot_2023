@@ -105,3 +105,23 @@ std::vector<armor_data> toe::Detector_base::get_results()
     outputs_mutex_.unlock();
     return temp_return;
 }
+
+bool toe::Detector_base::detect()
+{
+    if (!input_imgs.empty())
+    {
+        // std::cout << "read" << std::endl;
+        img_mutex_.lock();
+        input_img = input_imgs.back();
+        input_imgs.clear();
+        img_mutex_.unlock();
+
+        // std::cout << "trans" << std::endl;
+        preprocess();
+        // std::cout << "infer" << std::endl;
+        inference();
+        // std::cout << "post" << std::endl;
+        postprocess();
+    }
+    return true;
+}

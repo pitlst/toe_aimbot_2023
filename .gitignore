@@ -38,3 +38,4 @@ asio_1.28/*
 data/log/*
 data/video/*
 data/weights/*
+*.code-workspace

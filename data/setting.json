@@ -55,6 +55,7 @@
         "kpts": 8
     },
     "z_scale": 67116,
+    "batch_size": 2,
     "anchors": {
         "1": [],
         "2": [

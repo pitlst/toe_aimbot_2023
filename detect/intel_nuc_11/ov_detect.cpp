@@ -299,24 +299,4 @@ void toe::Detector::postprocess()
         outputs_armor.emplace_back(now);
     }
 }
-
-bool toe::Detector::detect()
-{
-    if (!input_imgs.empty())
-    {
-        // std::cout << "read" << std::endl;
-        img_mutex_.lock();
-        input_img = input_imgs.back();
-        input_imgs.clear();
-        img_mutex_.unlock();
-
-        // std::cout << "trans" << std::endl;
-        preprocess();
-        // std::cout << "infer" << std::endl;
-        inference();
-        // std::cout << "post" << std::endl;
-        postprocess();
-    }
-    return true;
-}
 #endif

@@ -80,9 +80,14 @@ elseif(TENSORRT_START)
         message(FATAL_ERROR "Cannot find TensorRT library.")
     endif()
     message(STATUS "已找到TensorRT")
+    # 添加tensorRT相关头文件
     include_directories(${TENSORRT_INCLUDE_DIR})
+    include_directories(/usr/src/tensorrt/samples/common)
+    # include_directories(${TENSORRT_INCLUDE_DIR})
     # 将宏定义传递至程序，启用英伟达
     add_compile_definitions(USE_NVIDIA)
+    # 添加cuda相关子目录，这样拓展目录中的CMakeLists.txt才会被调用，才会生成动态库
+    add_subdirectory(cuda_expand) 
     # 兼容性考虑,定义一个空的openvino::runtime
     add_library(algo_fast INTERFACE)
     add_library(openvino::runtime ALIAS algo_fast)
@@ -168,7 +173,6 @@ add_executable(orin_test
                 test/orin_test.cpp
                 )
 target_link_libraries(orin_test PRIVATE pthread ${OpenCV_LIBS} ${Boost_LIBRARIES}  ${CUDA_LIBRARIES} ${TENSORRT_LIBRARY})
-
 
 
 #--------------------------------------------------------------------------------------#

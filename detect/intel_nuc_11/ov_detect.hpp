@@ -10,7 +10,6 @@
 
 #include "openvino/openvino.hpp"
 
-
 namespace toe
 {
     class Detector final : public Detector_base 
@@ -19,7 +18,6 @@ namespace toe
         Detector() = default;
         ~Detector() = default;
         void Init(const toe::json_head & input_json, int color);
-        bool detect();
 
     private:
         void preprocess() override;
