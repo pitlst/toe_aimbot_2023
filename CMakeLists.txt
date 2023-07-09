@@ -83,11 +83,11 @@ elseif(TENSORRT_START)
     # 添加tensorRT相关头文件
     include_directories(${TENSORRT_INCLUDE_DIR})
     include_directories(/usr/src/tensorrt/samples/common)
-    # include_directories(${TENSORRT_INCLUDE_DIR})
+    include_directories(cuda_expand)
+    # 设置NVCC编译器编译参数
+    set(CUDA_NVCC_FLAGS -arch=sm_75;-G;-g)
     # 将宏定义传递至程序，启用英伟达
     add_compile_definitions(USE_NVIDIA)
-    # 添加cuda相关子目录，这样拓展目录中的CMakeLists.txt才会被调用，才会生成动态库
-    add_subdirectory(cuda_expand) 
     # 兼容性考虑,定义一个空的openvino::runtime
     add_library(algo_fast INTERFACE)
     add_library(openvino::runtime ALIAS algo_fast)
@@ -118,7 +118,7 @@ add_executable(${PROJECT_NAME}
                 detect/nvidia_orin_nx/orin_detect.hpp
                 main.cpp 
                 )
-target_link_libraries(${PROJECT_NAME} PRIVATE pthread ${OpenCV_LIBS} ${HIK_LIBS} ${Boost_LIBRARIES} ${TENSORRT_LIBRARY}  ${CUDA_LIBRARIES} openvino::runtime)
+target_link_libraries(${PROJECT_NAME} PRIVATE pthread ${OpenCV_LIBS} ${HIK_LIBS} ${Boost_LIBRARIES} ${TENSORRT_LIBRARY} ${CUDA_LIBRARIES} openvino::runtime)
 
 add_executable(serial_test
                 debug.hpp
@@ -174,7 +174,15 @@ add_executable(orin_test
                 )
 target_link_libraries(orin_test PRIVATE pthread ${OpenCV_LIBS} ${Boost_LIBRARIES}  ${CUDA_LIBRARIES} ${TENSORRT_LIBRARY})
 
-
+add_executable(cuda_expend_test
+                general/toe_structs.hpp
+                general/general.hpp
+                cuda_expand/cuda_expand.cuh
+                cuda_expand/postprocess.cu
+                cuda_expand/preprocess.cu
+                test/cuda_expend_test.cpp
+                )
+target_link_libraries(cuda_expend_test ${OpenCV_LIBS} ${CUDA_LIBRARIES})
 #--------------------------------------------------------------------------------------#
 #   项目测试设置
 #--------------------------------------------------------------------------------------#
@@ -182,3 +190,4 @@ add_test(serial_test serial_test)
 add_test(grab_test grab_test)
 add_test(ov_test ov_test)
 add_test(orin_test orin_test)
+add_test(cuda_expend_test cuda_expend_test)

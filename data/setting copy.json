@@ -3,24 +3,23 @@
         "engine_file_path": "data/weights/yolo.engine",
         "bin_file_path": "data/weights/2.bin",
         "xml_file_path": "data/weights/2.xml",
-        "serial_path":"/dev/ttyACM0"
+        "serial_path": "/dev/ttyACM0"
     },
-
     "determine": {
-        "max_history_armor_len":10,
-        "max_loss_armor_fps":10
+        "max_history_armor_len": 10,
+        "max_loss_armor_fps": 10
     },
     "camera": {
         "0": {
-            "width": 1072,
-            "height": 1072,
+            "width": 864,
+            "height": 864,
             "offset_x": 0,
             "offset_y": 0,
             "Reverse_X": false,
             "Reverse_Y": false,
             "ADC_bit_depth": 8,
             "exposure": 5000,
-            "gain": 17,
+            "gain": 10,
             "balck_level": 240
         },
         "1": {
@@ -37,10 +36,19 @@
         }
     },
     "NCHW": {
-        "batch_size": 1,
-        "C": 3,
-        "W": 640,
-        "H": 640
+        "openvino": {
+            "batch_size": 1,
+            "C": 3,
+            "W": 640,
+            "H": 640
+        },
+        "orin_nx":
+        {
+            "batch_size": 2,
+            "C": 3,
+            "W": 640,
+            "H": 640
+        }
     },
     "thresh": {
         "nms_thresh": 0.7,

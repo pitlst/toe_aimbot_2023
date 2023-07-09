@@ -46,8 +46,6 @@ namespace toe
         std::unique_ptr<nvinfer1::IRuntime> runtime_;
         std::unique_ptr<nvinfer1::IExecutionContext> context_;
         cudaStream_t stream_;
-        // 单次推理的图片数, 对于nx强制为2
-        const int batch_size_ = 2;
         // 缓存的指针数
         void* buffers_[5];
         // 指定张量的索引

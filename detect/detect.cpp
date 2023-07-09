@@ -11,11 +11,17 @@ void toe::Detector_base::Init(const toe::json_head & input_json, int color)
     param_.xml_file_path = temp_json["path"]["xml_file_path"].String();
 
     param_.camp = color;
-    param_.batch_size = temp_json["NCHW"]["batch_size"].Int();
-    param_.c = temp_json["NCHW"]["C"].Int();
-    param_.w = temp_json["NCHW"]["W"].Int();
-    param_.h = temp_json["NCHW"]["H"].Int();
-
+#ifdef USE_NVIDIA
+    param_.batch_size = temp_json["NCHW"]["orin_nx"]["batch_size"].Int();
+    param_.c = temp_json["NCHW"]["orin_nx"]["C"].Int();
+    param_.w = temp_json["NCHW"]["orin_nx"]["W"].Int();
+    param_.h = temp_json["NCHW"]["orin_nx"]["H"].Int();
+#else
+    param_.batch_size = temp_json["NCHW"]["openvino"]["batch_size"].Int();
+    param_.c = temp_json["NCHW"]["openvino"]["C"].Int();
+    param_.w = temp_json["NCHW"]["openvino"]["W"].Int();
+    param_.h = temp_json["NCHW"]["openvino"]["H"].Int();
+#endif
     param_.width = temp_json["camera"]["0"]["width"].Int();
     param_.height = temp_json["camera"]["0"]["height"].Int();
 
@@ -58,7 +64,7 @@ void toe::Detector_base::Init(const toe::json_head & input_json, int color)
 void toe::Detector_base::push_img(const cv::Mat& img)
 {   
     img_mutex_.lock();
-    if (input_imgs.size() == max_size_)
+    if (input_imgs.size() >= max_size_)
     {   
         input_imgs.clear();
     } 

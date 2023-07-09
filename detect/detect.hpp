@@ -22,7 +22,9 @@ namespace toe
         virtual void inference() = 0;
         virtual void postprocess() = 0;
 
+        // 根据配置文件初始化
         void Init(const toe::json_head & input_json, int color);
+        // 获取需要推理的图像
         void push_img(const cv::Mat& img);
         bool show_results(cv::Mat& img);
         bool detect();

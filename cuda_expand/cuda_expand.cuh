@@ -17,8 +17,8 @@ extern void ppreprocess(const cv::Mat& srcImg, void* dstData, const int dstHeigh
                     const int srcHeight, const int srcWidth);
 extern void decode_outputs_cu(float *prob, float* objects,
                     int stride, int num_out, const int img_w,
-                    const int img_h, s_detector_params& param_, int* nums);
-extern void do_nms(float* objects, float* final_out, int* nums, s_detector_params& param_, int n);
+                    const int img_h, detect_data& param_, int* nums);
+extern void do_nms(float* objects, float* final_out, int* nums, detect_data& param_, int n);
 
 
 #endif
