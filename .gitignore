@@ -36,6 +36,9 @@ build/*
 asio_1.28/*
 .vscode/*
 data/log/*
+!data/log/readme.md
 data/video/*
+!data/video/readme.md
 data/weights/*
+!data/weights/readme.md
 *.code-workspace
